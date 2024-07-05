@@ -1,8 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { getTrait, TRAITS } from "../lib/crewmate";
 import entityCrewmate from "../lib/crewmate";
-import entityCrew from "../lib/crew";
 
 export default function CreateCrewmate() {
   const [crewmate, setCrewmate] = useState({

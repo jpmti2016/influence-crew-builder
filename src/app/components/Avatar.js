@@ -1,29 +1,3 @@
-import { Fragment } from "react";
-import entityCrew from "../lib/crew";
-import entityCrewmate, { CLASS_IDS } from "../lib/crewmate";
-
-const getSVGColor = (cremateClass) => {
-  switch (cremateClass) {
-    case "miner":
-      return "fill-orange-400";
-      break;
-    case "scientist":
-      return "fill-blue-400";
-
-    case "engineer":
-      return "fill-red-400";
-
-    case "merchant":
-      return "fill-yellow-400";
-    case "pilot":
-      return "fill-purple-400";
-
-    default:
-      return "fill-yellow-200";
-      break;
-  }
-};
-
 const classesImgs = {
   miner: {
     src: "https://images.influenceth.io/v1/crew/26910/image.svg?bustOnly=true",
@@ -240,22 +214,18 @@ const traitsSVGs = {
   dietitian: (
     <svg
       xmlns="http://www.w3.org/2000/svg"
+      width=".54em"
+      height=".54em"
+      x=".23em"
+      y=".23em"
       aria-hidden="true"
-      focusable="false"
-      viewBox="0 0 36 36"
       className="w-3 h-3 fill-slate-300 sm:h-8 sm:w-8"
-      x="0.22999999999999998em"
-      y="0.22999999999999998em"
+      viewBox="0 0 36 36"
     >
-      <path d="M25.16,6.16A7.32,7.32,0,0,0,25.38,1a7.34,7.34,0,0,0-4.15,3.06,6.87,6.87,0,0,0-.38,4.56,87.94,87.94,0,0,0-5.69,26.45l.74,0a87.33,87.33,0,0,1,5.58-26A6.9,6.9,0,0,0,25.16,6.16Z"></path>
-      <path d="M9.92,25.8,8,19.79l1.48,6.58a6.3,6.3,0,0,0,1.13,4,6.79,6.79,0,0,0,4.3,2.08,6.8,6.8,0,0,0-1.08-4.66A6.47,6.47,0,0,0,9.92,25.8Z"></path>
-      <path d="M18.7,28.37a6.83,6.83,0,0,0-2.08,4.31,6.8,6.8,0,0,0,4.66-1.08,6,6,0,0,0,1.9-3.3h0l3.08-6.47-3.19,5.44A6.54,6.54,0,0,0,18.7,28.37Z"></path>
-      <path d="M19.77,22.53a6.78,6.78,0,0,0-2.55,4A6.8,6.8,0,0,0,22,26,6.15,6.15,0,0,0,24.23,23h0L28,16.86l-3.78,5.05A6.53,6.53,0,0,0,19.77,22.53Z"></path>
-      <path d="M10.84,19.51a6.23,6.23,0,0,0,.67,4.14,6.8,6.8,0,0,0,4,2.54A6.77,6.77,0,0,0,15,21.45,6.47,6.47,0,0,0,11.32,19l-1.23-6.18Z"></path>
-      <path d="M21.24,16.28a6.82,6.82,0,0,0-2.73,3.92,6.8,6.8,0,0,0,4.77-.34,6,6,0,0,0,2.39-3h0l4-5.91-4,4.87A6.54,6.54,0,0,0,21.24,16.28Z"></path>
-      <path d="M12.45,12.86A6.41,6.41,0,0,0,12.93,17a6.79,6.79,0,0,0,3.93,2.72A6.8,6.8,0,0,0,16.52,15,6.47,6.47,0,0,0,13,12.37L12,6.13Z"></path>
-      <path d="M18.51,13.46a6.79,6.79,0,0,0,.17-4.77,6.78,6.78,0,0,0-3.62-3.13,6.82,6.82,0,0,0-.17,4.78A6.82,6.82,0,0,0,18.51,13.46Z"></path>
-      <path d="M23.23,10.47a6.86,6.86,0,0,0-3.13,3.62,6.82,6.82,0,0,0,4.78.17A6.83,6.83,0,0,0,28,10.64,6.83,6.83,0,0,0,23.23,10.47Z"></path>
+      <path d="M25.16 6.16A7.32 7.32 0 0 0 25.38 1a7.34 7.34 0 0 0-4.15 3.06 6.87 6.87 0 0 0-.38 4.56 87.94 87.94 0 0 0-5.69 26.45h.74a87.33 87.33 0 0 1 5.58-26 6.9 6.9 0 0 0 3.68-2.91ZM9.92 25.8 8 19.79l1.48 6.58a6.3 6.3 0 0 0 1.13 4 6.79 6.79 0 0 0 4.3 2.08 6.8 6.8 0 0 0-1.08-4.66 6.47 6.47 0 0 0-3.91-1.99Z" />
+      <path d="M18.7 28.37a6.83 6.83 0 0 0-2.08 4.31 6.8 6.8 0 0 0 4.66-1.08 6 6 0 0 0 1.9-3.3l3.08-6.47-3.19 5.44a6.54 6.54 0 0 0-4.37 1.1Z" />
+      <path d="M19.77 22.53a6.78 6.78 0 0 0-2.55 4A6.8 6.8 0 0 0 22 26a6.15 6.15 0 0 0 2.23-3L28 16.86l-3.78 5.05a6.53 6.53 0 0 0-4.45.62ZM10.84 19.51a6.23 6.23 0 0 0 .67 4.14 6.8 6.8 0 0 0 4 2.54 6.77 6.77 0 0 0-.51-4.74A6.47 6.47 0 0 0 11.32 19l-1.23-6.18ZM21.24 16.28a6.82 6.82 0 0 0-2.73 3.92 6.8 6.8 0 0 0 4.77-.34 6 6 0 0 0 2.39-3l4-5.91-4 4.87a6.54 6.54 0 0 0-4.43.46ZM12.45 12.86a6.41 6.41 0 0 0 .48 4.14 6.79 6.79 0 0 0 3.93 2.72 6.8 6.8 0 0 0-.34-4.72A6.47 6.47 0 0 0 13 12.37l-1-6.24ZM18.51 13.46a6.79 6.79 0 0 0 .17-4.77 6.78 6.78 0 0 0-3.62-3.13 6.82 6.82 0 0 0-.17 4.78 6.82 6.82 0 0 0 3.62 3.12Z" />
+      <path d="M23.23 10.47a6.86 6.86 0 0 0-3.13 3.62 6.82 6.82 0 0 0 4.78.17A6.83 6.83 0 0 0 28 10.64a6.83 6.83 0 0 0-4.77-.17Z" />
     </svg>
   ),
   prospector: (
@@ -284,214 +254,7 @@ const traitsSVGs = {
   ),
 };
 
-const getCrewStats = (crew) => {
-  const stats = Object.values(entityCrewmate.ABILITY_TYPES);
-  const classIds = Object.entries(entityCrewmate.CLASS_IDS);
-  const classById = (id) => {
-    const className = classIds.find(([key, value]) => value === id);
-    return className ? className[0] : "N/A";
-  };
-
-  return stats.map((stat) => ({
-    name: stat.name,
-    class: stat.class,
-    departments: Object.entries(stat.departments ?? {}),
-    traits: Object.entries(stat.traits ?? {}),
-    class: classById(stat.class),
-  }));
-};
-
-const Departments = ({ departments }) => {
-  return (
-    <div className="flex flex-col gap-2">
-      {departments.map(([key, value]) => (
-        <div
-          key={entityCrewmate.DEPARTMENTS[key].name}
-          className="flex flex-col items-start gap-2 pb-1"
-        >
-          <div>{entityCrewmate.DEPARTMENTS[key].name}</div>
-          <div className="text-lg">{value}</div>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-const Traists = ({ traits }) => {
-  return (
-    <div className="flex items-start">
-      {traits.map(([key, value]) => (
-        <div
-          key={entityCrewmate.TRAITS[key].name}
-          className="flex flex-col items-start gap-2 pb-1"
-        >
-          <div>{entityCrewmate.TRAITS[key].name}</div>
-          <div className="text-lg">{value}</div>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-export function Titles() {
-  const titles = Object.values(entityCrewmate.TITLES)
-    .filter((t) => t.name !== "None")
-    .map((title) => {
-      return {
-        name: title.name,
-        department: title.department
-          ? entityCrewmate.DEPARTMENTS[title.department].name
-          : "N/A",
-        tier: title.tier ?? "N/A",
-      };
-    });
-
-  return (
-    <div className="px-4 mb-4 sm:mb-8 lg:mb-10 sm:px-6 lg:px-8">
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h2 className="text-base font-semibold leading-6 text-gray-900">
-            Titles
-          </h2>
-        </div>
-      </div>
-      <div className="flow-root mt-8">
-        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-300">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Department
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Tier
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {titles
-                    .sort((a, b) => a.department > b.department)
-                    .map((title) => (
-                      <tr key={title.email}>
-                        <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                          {title.name}
-                        </td>
-                        <td className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                          {title.department}
-                        </td>
-                        <td className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                          {title.tier}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default function CrewStats({ crew }) {
-  const stats = getCrewStats([]).sort((a, b) => a.class.localeCompare(b.class));
-
-  return (
-    <div className="px-4 mb-4 sm:px-6 lg:px-8 sm:mb-8 lg:mb-10">
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h2 className="text-base font-semibold leading-6 text-gray-900">
-            Abilities
-          </h2>
-        </div>
-      </div>
-      <div className="flow-root mt-8">
-        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-300">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                    >
-                      Ability
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Class
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Traits
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Department
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Further Modified
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {stats.map((stat) => (
-                    <tr key={stat.name}>
-                      <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                        {stat?.name}
-                      </td>
-                      <td className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                        {stat.class || "N/A"}
-                      </td>
-                      <td className="flex items-start px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                        {/* {stat.traits || "N/A"} */}
-                        <Traists traits={stat.traits} />
-                      </td>
-                      <td className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                        {/* {stat?.departments || "N/A"} */}
-                        <Departments departments={stat.departments} />
-                      </td>
-                      <td className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                        {stat.notFurtherModified ? "yes" : "no"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Avatar({ crewmate }) {
+export default function Avatar({ crewmate }) {
   return (
     <div className="flex-grow bg-slate-800 rounded-2xl">
       <div className="px-8 py-10">
@@ -502,9 +265,9 @@ function Avatar({ crewmate }) {
         />
         <div className="flex flex-row justify-center gap-4">
           <div>
-            <h2 className="mt-6 text-xl font-bold leading-7 tracking-tight text-slate-50">
+            <div className="mt-6 text-xl font-bold leading-7 tracking-tight text-slate-50">
               {crewmate.collection}
-            </h2>
+            </div>
           </div>
         </div>
       </div>
@@ -525,31 +288,6 @@ function Avatar({ crewmate }) {
           </div>
           <p className="text-sm leading-6 text-slate-300">{crewmate.traits}</p>
         </div>
-      </div>
-    </div>
-  );
-}
-
-export function CrewList({ crew }) {
-  return (
-    <div className="px-4 sm:px-6 lg:px-8">
-      <div className="p-4 bg-slate-200">
-        {
-          <div>
-            <ul
-              role="list"
-              className="grid max-w-2xl grid-cols-1 gap-2 mx-auto mb-20 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-5 sm:gap-3 lg:gap-8"
-            >
-              {crew?.map((crewmate) => (
-                <li key={crewmate.id} className="">
-                  <Avatar crewmate={crewmate} />
-                </li>
-              ))}
-            </ul>
-            <Titles />
-            <CrewStats crew={crew} />
-          </div>
-        }
       </div>
     </div>
   );

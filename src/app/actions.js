@@ -1,5 +1,10 @@
 "use server";
+
+import "server-only";
+
 import { v4 as uuidv4 } from "uuid";
+import entityCrewmate from "./lib/crewmate";
+import entityCrew from "./lib/crew";
 
 export const manageCrew = async (formData) => {
   const cremateId = uuidv4();
@@ -9,4 +14,53 @@ export const manageCrew = async (formData) => {
     id: cremateId,
     name: formData.get("name"),
   };
+};
+
+export const getAbilities = async (crew) => {
+  const stats = Object.values(entityCrewmate.ABILITY_TYPES);
+  const classIds = Object.entries(entityCrewmate.CLASS_IDS);
+  const classById = (id) => {
+    const className = classIds.find(([key, value]) => value === id);
+    return className ? className[0] : "N/A";
+  };
+
+  return stats
+    .map((stat) => ({
+      name: stat.name,
+      class: stat.class,
+      departments: Object.entries(stat.departments ?? {}),
+      traits: Object.entries(stat.traits ?? {}),
+      class: classById(stat.class),
+      notFurtherModified: stat.notFurtherModified,
+    }))
+    .sort((a, b) => a.class.localeCompare(b.class));
+};
+
+export const getTitles = async () => {
+  const titles = Object.values(entityCrewmate.TITLES)
+    .filter((t) => t.name !== "None")
+    .map((title) => {
+      return {
+        name: title.name,
+        department: title.department
+          ? entityCrewmate.DEPARTMENTS[title.department].name
+          : "N/A",
+        tier: title.tier ?? "N/A",
+      };
+    })
+    .sort((a, b) => a.department.localeCompare(b.department));
+
+  return titles;
+};
+
+export const getSVGColorByClass = async (crewClass) => {
+  const colors = {
+    Miner: "fill-orange-400",
+    Scientist: "fill-blue-400",
+    Merchant: "fill-yellow-400",
+    Pilot: "fill-purple-400",
+    Engineer: "fill-red-400",
+  };
+
+  return colors[crewClass];
 };

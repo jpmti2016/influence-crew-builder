@@ -1,0 +1,638 @@
+
+https://github.com/influenceth/sdk/blob/master/src/contracts/starknet_components.json
+
+Crew
+
+//    "members": [
+      {
+        "name": "delegated_to",
+        "type": "core::starknet::contract_address::ContractAddress"
+      },
+      {
+        "name": "roster",
+        "type": "core::array::Span::<core::integer::u64>"
+      },
+      {
+        "name": "last_fed",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "ready_at",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "action_type",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "action_target",
+        "type": "influence::common::types::entity::Entity"
+      },
+      {
+        "name": "action_round",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "action_weight",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "action_strategy",
+        "type": "core::integer::u64"
+      }
+    ]
+
+
+    //Crewmate
+  
+"members": [
+      {
+        "name": "status",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "collection",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "class",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "title",
+        "type": "core::integer::u64"
+      },
+      {
+        "name": "appearance",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "cosmetic",
+        "type": "core::array::Span::<core::integer::u64>"
+      },
+      {
+        "name": "impactful",
+        "type": "core::array::Span::<core::integer::u64>"
+      }
+    ]
+
+
+********************************
+Website response
+ //"Crewmate":
+                    {
+                        "appearance": "0x2300020007000100072",
+                        "class": 2,
+                        "coll": 4,
+                        "cosmetic": [
+                            2,
+                            36,
+                            9
+                        ],
+                        "impactful": [
+                            30
+                        ],
+                        "title": 0,
+                        "status": 1
+                    },
+                    "Name": {
+                        "name": "daal"
+                    },
+
+
+
+
+                    //Crews 
+                    [
+    {
+        "id": 2392,
+        "label": 1,
+        "uuid": "0x9580001",
+        "Crew": {
+            "actionRound": 655207,
+            "actionType": 1,
+            "delegatedTo": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "lastFed": 1720025021,
+            "readyAt": 1720209498,
+            "roster": [
+                24711,
+                24712,
+                24713,
+                24714,
+                24715
+            ],
+            "actionStrategy": 2,
+            "actionWeight": 118,
+            "actionTarget": {
+                "id": 4765,
+                "label": 7,
+                "uuid": "0x129d0007"
+            }
+        },
+        "Location": {
+            "location": {
+                "uuid": "0x10005",
+                "id": 1,
+                "label": 5
+            },
+            "locations": [
+                {
+                    "id": 1,
+                    "label": 5,
+                    "uuid": "0x10005"
+                },
+                {
+                    "id": 6881662889623553,
+                    "label": 4,
+                    "uuid": "0x1872d6000000010004"
+                },
+                {
+                    "id": 1,
+                    "label": 3,
+                    "uuid": "0x10003"
+                }
+            ]
+        },
+        "Inventories": [
+            {
+                "slot": 1,
+                "contents": [],
+                "inventoryType": 11,
+                "mass": 0,
+                "status": 2,
+                "reservedMass": 0,
+                "reservedVolume": 0,
+                "volume": 0
+            }
+        ],
+        "Name": {
+            "name": "Q UEC II III IX II"
+        },
+        "Nft": {
+            "owners": {
+                "ethereum": null,
+                "starknet": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84"
+            },
+            "updateImage": false,
+            "owner": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "chain": "STARKNET"
+        },
+        "Ship": {
+            "readyAt": 0,
+            "shipType": 1,
+            "status": 3,
+            "variant": 1
+        }
+    },
+    {
+        "id": 2393,
+        "label": 1,
+        "uuid": "0x9590001",
+        "Crew": {
+            "actionRound": 0,
+            "actionType": 0,
+            "delegatedTo": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "lastFed": 1720024890,
+            "readyAt": 1720212093,
+            "roster": [
+                24716,
+                26222,
+                26223,
+                26224,
+                26225
+            ],
+            "actionStrategy": 0,
+            "actionWeight": 0
+        },
+        "Location": {
+            "location": {
+                "uuid": "0x10005",
+                "id": 1,
+                "label": 5
+            },
+            "locations": [
+                {
+                    "id": 1,
+                    "label": 5,
+                    "uuid": "0x10005"
+                },
+                {
+                    "id": 6881662889623553,
+                    "label": 4,
+                    "uuid": "0x1872d6000000010004"
+                },
+                {
+                    "id": 1,
+                    "label": 3,
+                    "uuid": "0x10003"
+                }
+            ]
+        },
+        "Inventories": [
+            {
+                "slot": 1,
+                "contents": [],
+                "inventoryType": 11,
+                "mass": 0,
+                "status": 2,
+                "reservedMass": 0,
+                "reservedVolume": 0,
+                "volume": 0
+            }
+        ],
+        "Name": {
+            "name": "Q UEC II III IX III"
+        },
+        "Nft": {
+            "owners": {
+                "ethereum": null,
+                "starknet": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84"
+            },
+            "updateImage": false,
+            "owner": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "chain": "STARKNET"
+        },
+        "Ship": {
+            "readyAt": 0,
+            "shipType": 1,
+            "status": 3,
+            "variant": 1
+        }
+    },
+    {
+        "id": 3351,
+        "label": 1,
+        "uuid": "0xd170001",
+        "Crew": {
+            "actionRound": 655198,
+            "actionStrategy": 2,
+            "actionType": 2,
+            "actionWeight": 1072,
+            "delegatedTo": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "lastFed": 1720024890,
+            "readyAt": 1720211791,
+            "roster": [
+                24743,
+                26910,
+                26911,
+                26912,
+                26913
+            ],
+            "actionTarget": {
+                "id": 1047,
+                "label": 5,
+                "uuid": "0x4170005"
+            }
+        },
+        "Location": {
+            "location": {
+                "id": 1,
+                "label": 5,
+                "uuid": "0x10005"
+            },
+            "locations": [
+                {
+                    "id": 1,
+                    "label": 5,
+                    "uuid": "0x10005"
+                },
+                {
+                    "id": 6881662889623553,
+                    "label": 4,
+                    "uuid": "0x1872d6000000010004"
+                },
+                {
+                    "id": 1,
+                    "label": 3,
+                    "uuid": "0x10003"
+                }
+            ]
+        },
+        "Inventories": [
+            {
+                "contents": [],
+                "inventoryType": 11,
+                "mass": 0,
+                "slot": 1,
+                "status": 0,
+                "reservedMass": 0,
+                "reservedVolume": 0,
+                "volume": 0
+            }
+        ],
+        "Name": {
+            "name": "Q UEC III III V I"
+        },
+        "Nft": {
+            "owners": {
+                "ethereum": null,
+                "starknet": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84"
+            },
+            "updateImage": false,
+            "owner": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "chain": "STARKNET"
+        },
+        "Ship": {
+            "emergencyAt": 0,
+            "readyAt": 0,
+            "shipType": 1,
+            "status": 3,
+            "transitArrival": 0,
+            "transitDeparture": 0,
+            "variant": 1
+        }
+    },
+    {
+        "id": 3354,
+        "label": 1,
+        "uuid": "0xd1a0001",
+        "Crew": {
+            "actionRound": 655195,
+            "actionStrategy": 2,
+            "actionType": 2,
+            "actionWeight": 1074,
+            "delegatedTo": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "lastFed": 1720024890,
+            "readyAt": 1720210653,
+            "roster": [
+                24744,
+                24745,
+                24746,
+                26221,
+                26914
+            ],
+            "actionTarget": {
+                "id": 1099,
+                "label": 5,
+                "uuid": "0x44b0005"
+            }
+        },
+        "Location": {
+            "location": {
+                "id": 1,
+                "label": 5,
+                "uuid": "0x10005"
+            },
+            "locations": [
+                {
+                    "id": 1,
+                    "label": 5,
+                    "uuid": "0x10005"
+                },
+                {
+                    "id": 6881662889623553,
+                    "label": 4,
+                    "uuid": "0x1872d6000000010004"
+                },
+                {
+                    "id": 1,
+                    "label": 3,
+                    "uuid": "0x10003"
+                }
+            ]
+        },
+        "Inventories": [
+            {
+                "contents": [],
+                "inventoryType": 11,
+                "mass": 0,
+                "slot": 1,
+                "status": 0,
+                "reservedMass": 0,
+                "reservedVolume": 0,
+                "volume": 0
+            }
+        ],
+        "Name": {
+            "name": "Q UEC III III V IV"
+        },
+        "Nft": {
+            "owners": {
+                "ethereum": null,
+                "starknet": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84"
+            },
+            "updateImage": false,
+            "owner": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "chain": "STARKNET"
+        },
+        "Ship": {
+            "emergencyAt": 0,
+            "readyAt": 0,
+            "shipType": 1,
+            "status": 3,
+            "transitArrival": 0,
+            "transitDeparture": 0,
+            "variant": 1
+        }
+    },
+    {
+        "id": 3356,
+        "label": 1,
+        "uuid": "0xd1c0001",
+        "Crew": {
+            "actionRound": 0,
+            "actionStrategy": 0,
+            "actionType": 0,
+            "actionWeight": 0,
+            "delegatedTo": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "lastFed": 0,
+            "readyAt": 0,
+            "roster": []
+        },
+        "Location": {
+            "location": {
+                "id": 1,
+                "label": 5,
+                "uuid": "0x10005"
+            },
+            "locations": [
+                {
+                    "id": 1,
+                    "label": 5,
+                    "uuid": "0x10005"
+                },
+                {
+                    "id": 6881662889623553,
+                    "label": 4,
+                    "uuid": "0x1872d6000000010004"
+                },
+                {
+                    "id": 1,
+                    "label": 3,
+                    "uuid": "0x10003"
+                }
+            ]
+        },
+        "Inventories": [
+            {
+                "contents": [],
+                "inventoryType": 11,
+                "mass": 0,
+                "slot": 1,
+                "status": 0,
+                "reservedMass": 0,
+                "reservedVolume": 0,
+                "volume": 0
+            }
+        ],
+        "Name": null,
+        "Nft": {
+            "owners": {
+                "ethereum": null,
+                "starknet": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84"
+            },
+            "updateImage": false,
+            "owner": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "chain": "STARKNET"
+        },
+        "Ship": {
+            "emergencyAt": 0,
+            "readyAt": 0,
+            "shipType": 1,
+            "status": 3,
+            "transitArrival": 0,
+            "transitDeparture": 0,
+            "variant": 1
+        }
+    },
+    {
+        "id": 3357,
+        "label": 1,
+        "uuid": "0xd1d0001",
+        "Crew": {
+            "actionRound": 0,
+            "actionStrategy": 0,
+            "actionType": 0,
+            "actionWeight": 0,
+            "delegatedTo": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "lastFed": 0,
+            "readyAt": 0,
+            "roster": []
+        },
+        "Location": {
+            "location": {
+                "id": 1,
+                "label": 5,
+                "uuid": "0x10005"
+            },
+            "locations": [
+                {
+                    "id": 1,
+                    "label": 5,
+                    "uuid": "0x10005"
+                },
+                {
+                    "id": 6881662889623553,
+                    "label": 4,
+                    "uuid": "0x1872d6000000010004"
+                },
+                {
+                    "id": 1,
+                    "label": 3,
+                    "uuid": "0x10003"
+                }
+            ]
+        },
+        "Inventories": [
+            {
+                "contents": [],
+                "inventoryType": 11,
+                "mass": 0,
+                "slot": 1,
+                "status": 0,
+                "reservedMass": 0,
+                "reservedVolume": 0,
+                "volume": 0
+            }
+        ],
+        "Name": null,
+        "Nft": {
+            "owners": {
+                "ethereum": null,
+                "starknet": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84"
+            },
+            "updateImage": false,
+            "owner": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "chain": "STARKNET"
+        },
+        "Ship": {
+            "emergencyAt": 0,
+            "readyAt": 0,
+            "shipType": 1,
+            "status": 3,
+            "transitArrival": 0,
+            "transitDeparture": 0,
+            "variant": 1
+        }
+    },
+    {
+        "id": 3358,
+        "label": 1,
+        "uuid": "0xd1e0001",
+        "Crew": {
+            "actionRound": 0,
+            "actionStrategy": 0,
+            "actionType": 0,
+            "actionWeight": 0,
+            "delegatedTo": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "lastFed": 0,
+            "readyAt": 0,
+            "roster": []
+        },
+        "Location": {
+            "location": {
+                "id": 1,
+                "label": 5,
+                "uuid": "0x10005"
+            },
+            "locations": [
+                {
+                    "id": 1,
+                    "label": 5,
+                    "uuid": "0x10005"
+                },
+                {
+                    "id": 6881662889623553,
+                    "label": 4,
+                    "uuid": "0x1872d6000000010004"
+                },
+                {
+                    "id": 1,
+                    "label": 3,
+                    "uuid": "0x10003"
+                }
+            ]
+        },
+        "Inventories": [
+            {
+                "contents": [],
+                "inventoryType": 11,
+                "mass": 0,
+                "slot": 1,
+                "status": 0,
+                "reservedMass": 0,
+                "reservedVolume": 0,
+                "volume": 0
+            }
+        ],
+        "Name": null,
+        "Nft": {
+            "owners": {
+                "ethereum": null,
+                "starknet": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84"
+            },
+            "updateImage": false,
+            "owner": "0x0243f739a0d94059222c741d8b8d283ab5922e40db3529a23bbb5306652a2c84",
+            "chain": "STARKNET"
+        },
+        "Ship": {
+            "emergencyAt": 0,
+            "readyAt": 0,
+            "shipType": 1,
+            "status": 3,
+            "transitArrival": 0,
+            "transitDeparture": 0,
+            "variant": 1
+        }
+    }
+]

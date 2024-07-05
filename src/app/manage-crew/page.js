@@ -1,16 +1,13 @@
-"use client";
-
 import { getTrait, TRAITS } from "../lib/crewmate";
 import entityCrewmate from "../lib/crewmate";
 import entityCrew from "../lib/crew";
 
-import { useState, useEffect } from "react";
 import { manageCrew } from "../actions";
-import CreateCrewmate from "./create-crewmate";
-import { CrewList } from "./crew-list";
+import CreateCrewmate from "../components/CreateCrewmate";
+import { CrewList } from "../components/CrewList";
 
 export default function ManageCrew() {
-  const [crew, setcrew] = useState([
+  const crew = [
     {
       id: 1,
       collection: "Adalian",
@@ -22,7 +19,7 @@ export default function ManageCrew() {
       id: 2,
       collection: "Adalian",
       class: "Scientist",
-      traits: "Prospector",
+      traits: "Dietitian",
     },
     {
       id: 3,
@@ -42,7 +39,7 @@ export default function ManageCrew() {
       class: "Engineer",
       traits: "Refiner",
     },
-  ]);
+  ];
 
   return (
     <div className="bg-slate-200">
