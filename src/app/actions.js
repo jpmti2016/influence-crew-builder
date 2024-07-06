@@ -1,10 +1,17 @@
 "use server";
 
 import "server-only";
-
+import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
+
+import {
+  makeInfluenceApi,
+  preReleaseInfluenceApiUrl,
+} from "influence-typed-sdk/api";
+
 import entityCrewmate from "./lib/crewmate";
 import entityCrew from "./lib/crew";
+import { GetTokenFormSchema } from "./lib/schema";
 
 export const manageCrew = async (formData) => {
   const cremateId = uuidv4();
@@ -63,4 +70,40 @@ export const getSVGColorByClass = async (crewClass) => {
   };
 
   return colors[crewClass];
+};
+
+export const getJWTToken = async (state, formData) => {
+  const urls = {
+    influence: process.env.INFLUENCE_API,
+    prerelease: process.env.INFLUENCE_API_PRERELEASE,
+  };
+
+  const result = GetTokenFormSchema.safeParse({
+    api_url: formData.get("api_url"),
+  });
+
+  if (result.success) {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const url = `${urls[result.data.api_url]}/v1/auth/token`;
+
+    const response = await fetch(`${url}`, {
+      method: "POST",
+      body: JSON.stringify({
+        grant_type: process.env.GRANT_TYPE,
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
+      }),
+      headers: myHeaders,
+    });
+    const data = await response.json();
+    console.log("fetch data", data);
+
+    return data;
+  }
+
+  if (result.error) {
+    return { error: result.error.format() };
+  }
 };
