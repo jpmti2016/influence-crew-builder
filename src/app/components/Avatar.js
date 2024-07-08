@@ -1,5 +1,7 @@
+import { Crewmate } from "@influenceth/sdk";
+
 const classesImgs = {
-  miner: {
+  [Crewmate.CLASS_IDS.MINER]: {
     src: "https://images.influenceth.io/v1/crew/26910/image.svg?bustOnly=true",
     logo: (
       <svg
@@ -20,7 +22,7 @@ const classesImgs = {
       </svg>
     ),
   },
-  scientist: {
+  [Crewmate.CLASS_IDS.SCIENTIST]: {
     src: "https://images.influenceth.io/v1/crew/26912/image.svg?bustOnly=true",
     logo: (
       <svg
@@ -65,7 +67,7 @@ const classesImgs = {
       </svg>
     ),
   },
-  engineer: {
+  [Crewmate.CLASS_IDS.ENGINEER]: {
     src: "https://images.influenceth.io/v1/crew/24743/image.svg?bustOnly=true",
     logo: (
       <svg
@@ -80,7 +82,7 @@ const classesImgs = {
       </svg>
     ),
   },
-  merchant: {
+  [Crewmate.CLASS_IDS.MERCHANT]: {
     src: "https://images.influenceth.io/v1/crew/26911/image.svg?bustOnly=true",
     logo: (
       <svg
@@ -103,7 +105,7 @@ const classesImgs = {
       </svg>
     ),
   },
-  pilot: {
+  [Crewmate.CLASS_IDS.PILOT]: {
     src: "https://images.influenceth.io/v1/crew/26913/image.svg?bustOnly=true",
     logo: (
       <svg
@@ -131,9 +133,9 @@ const classesImgs = {
 };
 
 const traitsSVGs = {
-  refiner: (
+  [Crewmate.TRAIT_IDS.REFINER]: (
     <svg
-      className="w-3 h-3 fill-slate-300 sm:h-8 sm:w-8"
+      className="w-3 h-3 fill-cyan-300 sm:h-8 sm:w-8"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
@@ -146,13 +148,13 @@ const traitsSVGs = {
       <rect x="9.25" y="3.64" width="5.32" height="1.38"></rect>
     </svg>
   ),
-  navigator: (
+  [Crewmate.TRAIT_IDS.NAVIGATOR]: (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
       viewBox="0 0 36 36"
-      className="w-3 h-3 fill-slate-300 sm:h-8 sm:w-8"
+      className="w-3 h-3 fill-cyan-300 sm:h-8 sm:w-8"
       x="0.22999999999999998em"
       y="0.22999999999999998em"
     >
@@ -187,13 +189,13 @@ const traitsSVGs = {
       <path d="M25.7,16a.23.23,0,0,0,.17-.07.24.24,0,0,0,0-.34l-.7-.69a.24.24,0,1,0-.33.34l.68.69A.23.23,0,0,0,25.7,16Z"></path>
     </svg>
   ),
-  hauler: (
+  [Crewmate.TRAIT_IDS.HAULER]: (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
       viewBox="0 0 36 36"
-      className="w-3 h-3 fill-slate-300 sm:h-8 sm:w-8"
+      className="w-3 h-3 fill-cyan-300 sm:h-8 sm:w-8"
       height="0.54em"
       width="0.54em"
       x="0.22999999999999998em"
@@ -211,7 +213,7 @@ const traitsSVGs = {
       <polygon points="16.65 13.3 16.75 13.43 17.19 13.96 17.28 14.07 17.43 13.96 19.81 12.01 21.7 10.45 28.12 5.18 27.49 4.41 18.61 11.69 16.65 13.3"></polygon>
     </svg>
   ),
-  dietitian: (
+  [Crewmate.TRAIT_IDS.DIETITIAN]: (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width=".54em"
@@ -219,7 +221,7 @@ const traitsSVGs = {
       x=".23em"
       y=".23em"
       aria-hidden="true"
-      className="w-3 h-3 fill-slate-300 sm:h-8 sm:w-8"
+      className="w-3 h-3 fill-cyan-300 sm:h-8 sm:w-8"
       viewBox="0 0 36 36"
     >
       <path d="M25.16 6.16A7.32 7.32 0 0 0 25.38 1a7.34 7.34 0 0 0-4.15 3.06 6.87 6.87 0 0 0-.38 4.56 87.94 87.94 0 0 0-5.69 26.45h.74a87.33 87.33 0 0 1 5.58-26 6.9 6.9 0 0 0 3.68-2.91ZM9.92 25.8 8 19.79l1.48 6.58a6.3 6.3 0 0 0 1.13 4 6.79 6.79 0 0 0 4.3 2.08 6.8 6.8 0 0 0-1.08-4.66 6.47 6.47 0 0 0-3.91-1.99Z" />
@@ -228,13 +230,13 @@ const traitsSVGs = {
       <path d="M23.23 10.47a6.86 6.86 0 0 0-3.13 3.62 6.82 6.82 0 0 0 4.78.17A6.83 6.83 0 0 0 28 10.64a6.83 6.83 0 0 0-4.77-.17Z" />
     </svg>
   ),
-  prospector: (
+  [Crewmate.TRAIT_IDS.PROSPECTOR]: (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
       viewBox="0 0 36 36"
-      className="w-3 h-3 fill-slate-300 sm:h-8 sm:w-8"
+      className="w-3 h-3 fill-cyan-300 sm:h-8 sm:w-8"
       x="0.22999999999999998em"
       y="0.22999999999999998em"
     >
@@ -256,37 +258,32 @@ const traitsSVGs = {
 
 export default function Avatar({ crewmate }) {
   return (
-    <div className="flex-grow bg-slate-800 rounded-2xl">
-      <div className="px-8 py-10">
+    <div className="flex-grow bg-cyan-950 rounded-2xl min-w-20">
+      <div className="">
         <img
-          className="w-48 h-48 mx-auto rounded-full md:h-56 md:w-56"
-          src={classesImgs[crewmate.class.toLowerCase()].src}
+          className="w-full h-full rounded-t-2xl"
+          src={crewmate.src}
           alt=""
         />
-        <div className="flex flex-row justify-center gap-4">
-          <div>
-            <div className="mt-6 text-xl font-bold leading-7 tracking-tight text-slate-50">
-              {crewmate.collection}
-            </div>
-          </div>
-        </div>
       </div>
-      <div className="w-full p-2 px-8 py-10 bg-slate-600/20 rounded-b-2xl">
+      <div className="flex flex-col items-center justify-center w-full p-2 sm:px-8 sm:py-10 rounded-b-2xl">
         <div className="flex flex-row items-center gap-2 mb-2 sm:mb-4">
           <div className="">
             <span className="sr-only">Crewmate class logo</span>
-            <span>{classesImgs[crewmate.class.toLowerCase()].logo}</span>
+            <span>{classesImgs[crewmate.classId].logo}</span>
           </div>
-          <div className="text-lg font-semibold leading-7 tracking-tight text-slate-200">
-            {crewmate.class}
+          <div className="text-lg font-semibold leading-7 tracking-tight text-cyan-200">
+            {Crewmate.CLASSES[crewmate.classId].name}
           </div>
         </div>
         <div className="flex flex-row items-center gap-2">
           <div>
-            <span className="sr-only">LinkedIn</span>
-            <span>{traitsSVGs[crewmate.traits.toLowerCase()]}</span>
+            <span className="sr-only">Crewmate trait logo</span>
+            <span>{traitsSVGs[crewmate.traitIds[0]]}</span>
           </div>
-          <p className="text-sm leading-6 text-slate-300">{crewmate.traits}</p>
+          <p className="text-sm leading-6 text-cyan-300">
+            {Crewmate.TRAITS[crewmate.traitIds[0]].name}
+          </p>
         </div>
       </div>
     </div>

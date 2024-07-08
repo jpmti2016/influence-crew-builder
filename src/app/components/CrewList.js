@@ -1,8 +1,13 @@
 import Titles from "./Titles";
 import Abilities from "./Abilities";
 import Avatar from "./Avatar";
+import BonusByAbility from "./BonusByAbility";
 
-export function CrewList({ crew }) {
+import { getBonus, crew } from "../utils";
+
+export async function CrewList() {
+  const bonuses = getBonus(crew);
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="p-4 bg-slate-200">
@@ -12,13 +17,14 @@ export function CrewList({ crew }) {
               role="list"
               className="grid max-w-2xl grid-cols-1 gap-2 mx-auto mb-20 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-5 sm:gap-3 lg:gap-8"
             >
-              {crew?.map((crewmate) => (
+              {crew?.crewmates.map((crewmate) => (
                 <div key={crewmate.id} className="">
                   <Avatar crewmate={crewmate} />
                 </div>
               ))}
             </div>
-            <Titles />
+
+            <BonusByAbility bonuses={bonuses} />
             <Abilities crew={crew} />
           </div>
         }

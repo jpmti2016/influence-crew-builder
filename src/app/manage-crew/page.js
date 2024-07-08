@@ -1,53 +1,24 @@
-import { getTrait, TRAITS } from "../lib/crewmate";
-import entityCrewmate from "../lib/crewmate";
-import entityCrew from "../lib/crew";
+import {
+  getCrews,
+  getBonus,
+  bonusByAbilityId,
+  TRAITS_BY_CLASS,
+} from "../utils";
+
+import influence from "../lib/influence-sdk";
+import { Entity } from "@influenceth/sdk";
 
 import { manageCrew } from "../actions";
+import { crew } from "../utils";
 import CreateCrewmate from "../components/CreateCrewmate";
 import { CrewList } from "../components/CrewList";
 
-export default function ManageCrew() {
-  const crew = [
-    {
-      id: 1,
-      collection: "Adalian",
-      class: "Miner",
-      traits: "Prospector",
-    },
-    ,
-    {
-      id: 2,
-      collection: "Adalian",
-      class: "Scientist",
-      traits: "Dietitian",
-    },
-    {
-      id: 3,
-      collection: "Adalian",
-      class: "Merchant",
-      traits: "Hauler",
-    },
-    {
-      id: 4,
-      collection: "Adalian",
-      class: "Pilot",
-      traits: "Navigator",
-    },
-    {
-      id: 5,
-      collection: "Adalian",
-      class: "Engineer",
-      traits: "Refiner",
-    },
-  ];
-
+export default async function ManageCrew() {
   return (
     <div className="bg-slate-200">
       <h1 className="p-4 font-bold text-slate-600 bg-slate-200 sm:py-12 sm:text-3xl">
         Crew 1
       </h1>
-
-      <CrewList crew={crew} />
 
       <form action={manageCrew} className="p-4">
         <h2 className="p-3 font-bold text-slate-600 bg-slate-200 sm:py-12 sm:text-3xl">
@@ -100,6 +71,8 @@ export default function ManageCrew() {
           Change Crew
         </button>
       </form>
+
+      <CrewList crew={crew} />
     </div>
   );
 }

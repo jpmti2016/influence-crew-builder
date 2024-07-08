@@ -1,17 +1,14 @@
-import { getAbilities } from "../actions";
+import { BonusClass } from "../components/BonusClass";
+import { BonusTraits } from "../components/BonusTraits";
+import { BonusTitles } from "../components/BonusTitles";
 
-import Traits from "./Traits";
-import Departments from "./Departments";
-
-export default async function Abilities() {
-  const stats = await getAbilities();
-
+export default async function BonusByAbility({ bonuses }) {
   return (
-    <div className="mb-4  sm:mb-8 lg:mb-10">
+    <div className="mb-4 sm:mb-8 lg:mb-10">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h2 className="text-base font-semibold leading-6 text-gray-900">
-            Abilities
+            Bonus by Abilities
           </h2>
         </div>
       </div>
@@ -44,35 +41,65 @@ export default async function Abilities() {
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Department
+                      Titles
+                    </th>
+
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
+                      Crewmates Multiplier
                     </th>
                     <th
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Further Modified
+                      Station Multiplier
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
+                      Food Multiplier
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
+                      Total Bonus
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {stats.map((stat) => (
-                    <tr key={stat.name}>
+                  {bonuses?.map((bonus) => (
+                    <tr key={bonus?.name}>
                       <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                        {stat?.name}
+                        {bonus?.name}
                       </td>
                       <td className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                        {stat.class || "N/A"}
-                      </td>
-                      <td className="flex items-start px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                        {/* {stat.traits || "N/A"} */}
-                        <Traits traits={stat.traits} />
+                        <BonusClass bonusClass={bonus?.class} />
                       </td>
                       <td className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                        {/* {stat?.departments || "N/A"} */}
-                        <Departments departments={stat.departments} />
+                        <BonusTraits traits={bonus?.traits} />
                       </td>
                       <td className="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                        {stat.notFurtherModified ? "no" : "yes"}
+                        <BonusTitles titles={bonus?.titles} />
+                      </td>
+                      <td className="px-3 py-4 text-lg text-gray-500 whitespace-nowrap">
+                        {bonus?.crewmatesMultiplier?.toFixed(4)}
+                      </td>
+                      <td className="px-3 py-4 text-lg text-gray-500 whitespace-nowrap">
+                        {bonus?.stationMultiplier?.toFixed(4) || (
+                          <span className="text-sm">{"N/A"}</span>
+                        )}
+                      </td>
+                      <td className="px-3 py-4 text-lg text-gray-500 whitespace-nowrap">
+                        {bonus?.foodMultiplier?.toFixed(4) || (
+                          <span className="text-sm">{"N/A"}</span>
+                        )}
+                      </td>
+                      <td className="px-3 py-4 text-lg text-gray-500 whitespace-nowrap">
+                        {bonus?.totalBonus?.toFixed(4)}
                       </td>
                     </tr>
                   ))}
