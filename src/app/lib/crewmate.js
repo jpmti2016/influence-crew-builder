@@ -734,7 +734,6 @@ const ABILITY_TYPES = {
   [ABILITY_IDS.HOPPER_TRANSPORT_TIME]: {
     i: ABILITY_IDS.HOPPER_TRANSPORT_TIME,
     name: "Hopper Transport Time",
-    class: CLASS_IDS.MERCHANT,
     departments: {
       [DEPARTMENT_IDS.LOGISTICS]: 0.0125,
       [DEPARTMENT_IDS.MANAGEMENT]: 0.005,
@@ -749,7 +748,6 @@ const ABILITY_TYPES = {
   [ABILITY_IDS.INVENTORY_MASS_CAPACITY]: {
     i: ABILITY_IDS.INVENTORY_MASS_CAPACITY,
     name: "Inventory Mass Capacity",
-    class: CLASS_IDS.MERCHANT,
     traits: { [TRAIT_IDS.HAULER]: 0.05 },
     notFurtherModified: true,
   },
@@ -788,7 +786,6 @@ const ABILITY_TYPES = {
   [ABILITY_IDS.DECONSTRUCTION_YIELD]: {
     i: ABILITY_IDS.DECONSTRUCTION_YIELD,
     name: "Deconstruction Yield",
-    class: CLASS_IDS.MINER,
     traits: { [TRAIT_IDS.RECYCLER]: 0.1 },
   },
   [ABILITY_IDS.REFINING_TIME]: {
@@ -828,7 +825,6 @@ const ABILITY_TYPES = {
   [ABILITY_IDS.FOOD_CONSUMPTION_TIME]: {
     i: ABILITY_IDS.FOOD_CONSUMPTION_TIME,
     name: "Food Consumption Time",
-    class: CLASS_IDS.SCIENTIST,
     departments: { [DEPARTMENT_IDS.FOOD_PREPARATION]: 0.05 },
     traits: { [TRAIT_IDS.DIETITIAN]: 0.1 },
     notFurtherModified: true,
@@ -843,7 +839,6 @@ const ABILITY_TYPES = {
   [ABILITY_IDS.MARKETPLACE_FEE_ENFORCEMENT]: {
     i: ABILITY_IDS.MARKETPLACE_FEE_ENFORCEMENT,
     name: "Marketplace Fee Enforcement",
-    class: CLASS_IDS.MERCHANT,
     traits: { [TRAIT_IDS.MOGUL]: 0.16 },
     notFurtherModified: true,
   },
