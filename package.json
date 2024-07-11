@@ -12,6 +12,7 @@
     "@headlessui/react": "^2.1.1",
     "@heroicons/react": "^2.1.4",
     "@influenceth/sdk": "2.1.2",
+    "fs": "^0.0.1-security",
     "influence-typed-sdk": "1.5.5",
     "next": "14.2.4",
     "react": "^18",
