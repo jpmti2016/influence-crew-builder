@@ -6,7 +6,7 @@ import Abilities from "./Abilities";
 
 import SimulatedCrew from "./SimulatedCrew";
 
-import { getSimulatedCrew, getImpacfulTraits } from "../utils";
+import { getSimulatedCrew } from "../utils";
 import CrewImpactfulTraits from "./CrewImpactfulTraits";
 
 export default function LiftingState() {

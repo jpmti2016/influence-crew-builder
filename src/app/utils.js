@@ -1,4 +1,4 @@
-import { Crewmate, Entity } from "@influenceth/sdk";
+import { Crewmate } from "@influenceth/sdk";
 
 import influence from "./lib/influence-sdk";
 import { v4 as uuidv4 } from "uuid";

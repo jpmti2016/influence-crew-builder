@@ -180,7 +180,7 @@ export default function SimulatedCrew({ simulatedCrew, setSimulatedCrew }) {
       <div>
         <div
           role="list"
-          className="grid max-w-2xl grid-cols-1 gap-2 mx-auto sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-5 sm:gap-3 lg:gap-8"
+          className="grid max-w-2xl grid-cols-1 gap-3 mx-auto sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-5 sm:gap-4 lg:gap-8"
         >
           {simulatedCrew?.map((crewmate) => (
             <div key={crewmate.id} className="">
