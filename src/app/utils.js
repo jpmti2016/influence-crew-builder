@@ -1,6 +1,7 @@
 import { Crewmate, Entity } from "@influenceth/sdk";
 
 import influence from "./lib/influence-sdk";
+import { v4 as uuidv4 } from "uuid";
 
 import Crew from "./lib/crew";
 
@@ -32,12 +33,12 @@ export const TRAITS_BY_CLASS = {
   ],
 };
 
-export const getCrew = async ({ id, label }) => {
-  //TODO Auth fail
-  const result = await api.entity({ label: Entity.IDS.CREW, id: 4938 });
+// export const getCrew = async ({ id, label }) => {
+//   //TODO Auth fail
+//   const result = await api.entity({ label: Entity.IDS.CREW, id: 4938 });
 
-  return result.json();
-};
+//   return result.json();
+// };
 
 export const getCrews = async (address) =>
   //TODO Auth fail
@@ -82,40 +83,128 @@ const getCrewBusyLocation = (entity) => {
   }
 };
 
-export const crew = {
-  crewmates: [
-    {
-      collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
-      classId: Crewmate.CLASS_IDS.MINER,
-      traitIds: [Crewmate.TRAIT_IDS.PROSPECTOR],
-      src: influence.imageUrls.crewmate(28432),
-    },
-    {
-      collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
-      classId: Crewmate.CLASS_IDS.ENGINEER,
-      traitIds: [Crewmate.TRAIT_IDS.REFINER],
-      src: influence.imageUrls.crewmate(20709),
-    },
-    {
-      collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
-      classId: Crewmate.CLASS_IDS.SCIENTIST,
-      traitIds: [Crewmate.TRAIT_IDS.DIETITIAN],
-      src: influence.imageUrls.crewmate(23365),
-    },
-    {
-      collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
-      classId: Crewmate.CLASS_IDS.MERCHANT,
-      traitIds: [Crewmate.TRAIT_IDS.HAULER],
-      src: influence.imageUrls.crewmate(23857),
-    },
-    {
-      collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
-      classId: Crewmate.CLASS_IDS.PILOT,
-      traitIds: [Crewmate.TRAIT_IDS.NAVIGATOR],
-      src: influence.imageUrls.crewmate(23342),
-    },
-  ],
+const imgsByClass = {
+  [Crewmate.CLASS_IDS.MINER]: { src: influence.imageUrls.crewmate(28432) },
+  [Crewmate.CLASS_IDS.ENGINEER]: { src: influence.imageUrls.crewmate(20709) },
+  [Crewmate.CLASS_IDS.SCIENTIST]: { src: influence.imageUrls.crewmate(23365) },
+  [Crewmate.CLASS_IDS.MERCHANT]: { src: influence.imageUrls.crewmate(23857) },
+  [Crewmate.CLASS_IDS.PILOT]: { src: influence.imageUrls.crewmate(23342) },
 };
+
+export const crew = [
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.MINER,
+    traitIds: [Crewmate.TRAIT_IDS.PROSPECTOR],
+    src: influence.imageUrls.crewmate(28432),
+  },
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.ENGINEER,
+    traitIds: [Crewmate.TRAIT_IDS.REFINER],
+    src: influence.imageUrls.crewmate(20709),
+  },
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.SCIENTIST,
+    traitIds: [Crewmate.TRAIT_IDS.DIETITIAN],
+    src: influence.imageUrls.crewmate(23365),
+  },
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.MERCHANT,
+    traitIds: [Crewmate.TRAIT_IDS.LOGISTICIAN],
+    src: influence.imageUrls.crewmate(23857),
+  },
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.PILOT,
+    traitIds: [Crewmate.TRAIT_IDS.NAVIGATOR],
+    src: influence.imageUrls.crewmate(23342),
+  },
+];
+
+// Surface Speed, Market Feed Reduction, Free Transport Distance Increase
+export const onPlanetMerchLogistCrew = [
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.MERCHANT,
+    traitIds: [Crewmate.TRAIT_IDS.LOGISTICIAN],
+    src: influence.imageUrls.crewmate(23857),
+  },
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.MERCHANT,
+    traitIds: [Crewmate.TRAIT_IDS.LOGISTICIAN],
+    src: influence.imageUrls.crewmate(23857),
+  },
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.MERCHANT,
+    traitIds: [Crewmate.TRAIT_IDS.LOGISTICIAN],
+    src: influence.imageUrls.crewmate(23857),
+  },
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.MERCHANT,
+    traitIds: [Crewmate.TRAIT_IDS.LOGISTICIAN],
+    src: influence.imageUrls.crewmate(23857),
+  },
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.MERCHANT,
+    traitIds: [Crewmate.TRAIT_IDS.LOGISTICIAN],
+    src: influence.imageUrls.crewmate(23857),
+  },
+];
+export const refiningCrew = [
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.ENGINEER,
+    traitIds: [Crewmate.TRAIT_IDS.REFINER],
+    src: influence.imageUrls.crewmate(20709),
+  },
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.ENGINEER,
+    traitIds: [Crewmate.TRAIT_IDS.REFINER],
+    src: influence.imageUrls.crewmate(20709),
+  },
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.ENGINEER,
+    traitIds: [Crewmate.TRAIT_IDS.REFINER],
+    src: influence.imageUrls.crewmate(20709),
+  },
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.SCIENTIST,
+    traitIds: [Crewmate.TRAIT_IDS.DIETITIAN],
+    src: influence.imageUrls.crewmate(23365),
+  },
+  {
+    id: uuidv4(),
+    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    classId: Crewmate.CLASS_IDS.PILOT,
+    traitIds: [Crewmate.TRAIT_IDS.DIETITIAN],
+    src: influence.imageUrls.crewmate(23365),
+  },
+];
+
 // {
 //   crewmates: [
 // { classId: 4 },
@@ -170,8 +259,12 @@ export const crew = {
 //   ],
 // },
 
+export const getSimulatedCrew = () => {
+  return crew;
+};
+
 export const bonusByAbilityId = (abilityId, crew) => {
-  const details = Crew.getAbilityBonus(abilityId, crew?.crewmates);
+  const details = Crew.getAbilityBonus(abilityId, crew);
 
   return details;
 };
@@ -194,9 +287,13 @@ export const getBonus = (crew) => {
   });
 };
 
-export const getImapcfulTraits = () => {
-  const traits = Object.values(Crewmate.TRAITS).filter(
-    (t) => t.type === "impactful"
-  );
-  return traits;
+export const getImpacfulTraits = () => {
+  const traits = Object.entries(Crewmate.TRAITS).map(([key, value]) => {
+    return {
+      traitId: key,
+      ...value,
+    };
+  });
+
+  return traits.filter((t) => t.type === "impactful");
 };

@@ -1,7 +1,7 @@
 import { getTitles } from "../actions";
 
-export default async function Titles() {
-  const titles = await getTitles();
+export default function Titles() {
+  const titles = getTitles();
 
   return (
     <div className="px-4 mb-4 sm:mb-8 lg:mb-10 sm:px-6 lg:px-8">

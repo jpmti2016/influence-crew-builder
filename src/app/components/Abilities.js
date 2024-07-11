@@ -1,13 +1,15 @@
 import { getAbilities } from "../actions";
 
-import Traits from "./Traits";
+import Traits from "./CrewImpactfulTraits";
 import Departments from "./Departments";
 
-export default async function Abilities() {
-  const stats = await getAbilities();
+export default function Abilities() {
+  const stats = getAbilities();
+
+  console.log("stats", stats);
 
   return (
-    <div className="mb-4  sm:mb-8 lg:mb-10">
+    <div className="mb-4 sm:mb-8 lg:mb-10">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h2 className="text-base font-semibold leading-6 text-gray-900">
@@ -55,7 +57,7 @@ export default async function Abilities() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {stats.map((stat) => (
+                  {[].map((stat) => (
                     <tr key={stat.name}>
                       <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
                         {stat?.name}

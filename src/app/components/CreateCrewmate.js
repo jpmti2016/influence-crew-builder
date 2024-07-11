@@ -1,6 +1,13 @@
 "use client";
+
 import { useState, useEffect } from "react";
-import entityCrewmate from "../lib/crewmate";
+import { Crewmate, Entity } from "@influenceth/sdk";
+import {
+  getCrews,
+  getBonus,
+  bonusByAbilityId,
+  TRAITS_BY_CLASS,
+} from "../utils";
 
 export default function CreateCrewmate() {
   const [crewmate, setCrewmate] = useState({
@@ -14,9 +21,9 @@ export default function CreateCrewmate() {
   const [traits, setTraits] = useState([]);
 
   useEffect(() => {
-    setCollection(Object.values(entityCrewmate.COLLECTIONS));
-    setClasses(Object.values(entityCrewmate.CLASSES));
-    setTraits(Object.values(entityCrewmate.TRAITS));
+    setCollection(Object.values(Crewmate.COLLECTIONS));
+    setClasses(Object.values(Crewmate.CLASSES));
+    setTraits(Object.values(Crewmate.TRAITS));
   }, []);
 
   return (

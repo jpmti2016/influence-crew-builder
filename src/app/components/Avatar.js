@@ -135,7 +135,7 @@ const classesImgs = {
 const traitsSVGs = {
   [Crewmate.TRAIT_IDS.REFINER]: (
     <svg
-      className="w-3 h-3 fill-cyan-300 sm:h-8 sm:w-8"
+      className="w-3 h-3 fill-slate-300 sm:h-8 sm:w-8"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
@@ -154,7 +154,7 @@ const traitsSVGs = {
       aria-hidden="true"
       focusable="false"
       viewBox="0 0 36 36"
-      className="w-3 h-3 fill-cyan-300 sm:h-8 sm:w-8"
+      className="w-3 h-3 fill-slate-300 sm:h-8 sm:w-8"
       x="0.22999999999999998em"
       y="0.22999999999999998em"
     >
@@ -195,7 +195,7 @@ const traitsSVGs = {
       aria-hidden="true"
       focusable="false"
       viewBox="0 0 36 36"
-      className="w-3 h-3 fill-cyan-300 sm:h-8 sm:w-8"
+      className="w-3 h-3 fill-slate-300 sm:h-8 sm:w-8"
       height="0.54em"
       width="0.54em"
       x="0.22999999999999998em"
@@ -221,7 +221,7 @@ const traitsSVGs = {
       x=".23em"
       y=".23em"
       aria-hidden="true"
-      className="w-3 h-3 fill-cyan-300 sm:h-8 sm:w-8"
+      className="w-3 h-3 fill-slate-300 sm:h-8 sm:w-8"
       viewBox="0 0 36 36"
     >
       <path d="M25.16 6.16A7.32 7.32 0 0 0 25.38 1a7.34 7.34 0 0 0-4.15 3.06 6.87 6.87 0 0 0-.38 4.56 87.94 87.94 0 0 0-5.69 26.45h.74a87.33 87.33 0 0 1 5.58-26 6.9 6.9 0 0 0 3.68-2.91ZM9.92 25.8 8 19.79l1.48 6.58a6.3 6.3 0 0 0 1.13 4 6.79 6.79 0 0 0 4.3 2.08 6.8 6.8 0 0 0-1.08-4.66 6.47 6.47 0 0 0-3.91-1.99Z" />
@@ -236,7 +236,7 @@ const traitsSVGs = {
       aria-hidden="true"
       focusable="false"
       viewBox="0 0 36 36"
-      className="w-3 h-3 fill-cyan-300 sm:h-8 sm:w-8"
+      className="w-3 h-3 fill-slate-300 sm:h-8 sm:w-8"
       x="0.22999999999999998em"
       y="0.22999999999999998em"
     >
@@ -258,7 +258,7 @@ const traitsSVGs = {
 
 export default function Avatar({ crewmate }) {
   return (
-    <div className="flex-grow bg-cyan-950 rounded-2xl min-w-20">
+    <div className="flex-grow bg-slate-950 rounded-2xl min-w-20">
       <div className="">
         <img
           className="w-full h-full rounded-t-2xl"
@@ -272,7 +272,7 @@ export default function Avatar({ crewmate }) {
             <span className="sr-only">Crewmate class logo</span>
             <span>{classesImgs[crewmate.classId].logo}</span>
           </div>
-          <div className="text-lg font-semibold leading-7 tracking-tight text-cyan-200">
+          <div className="text-lg font-semibold leading-7 tracking-tight text-slate-200">
             {Crewmate.CLASSES[crewmate.classId].name}
           </div>
         </div>
@@ -281,8 +281,8 @@ export default function Avatar({ crewmate }) {
             <span className="sr-only">Crewmate trait logo</span>
             <span>{traitsSVGs[crewmate.traitIds[0]]}</span>
           </div>
-          <p className="text-sm leading-6 text-cyan-300">
-            {Crewmate.TRAITS[crewmate.traitIds[0]].name}
+          <p className="text-sm leading-6 text-slate-300">
+            {Crewmate.TRAITS[crewmate.traitIds[0]]?.name}
           </p>
         </div>
       </div>

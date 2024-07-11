@@ -1,29 +1,27 @@
 "use server";
 
+import { cache } from "react";
+
 import "server-only";
-import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 
-import {
-  makeInfluenceApi,
-  preReleaseInfluenceApiUrl,
-} from "influence-typed-sdk/api";
+import influence from "./lib/influence-sdk";
+import { influenceApiUrl } from "influence-typed-sdk/api";
 
 import entityCrewmate from "./lib/crewmate";
-import entityCrew from "./lib/crew";
 import { GetTokenFormSchema } from "./lib/schema";
 
-export const manageCrew = async (formData) => {
+export const manageCrew = (formData) => {
   const cremateId = uuidv4();
 
-  console.log("Change crew button clicked", formData);
+  // console.log("Change crew button clicked", formData);
   const cremate = {
     id: cremateId,
     name: formData.get("name"),
   };
 };
 
-export const getAbilities = async (crew) => {
+export const getAbilities = cache((crew) => {
   const stats = Object.values(entityCrewmate.ABILITY_TYPES);
   const classIds = Object.entries(entityCrewmate.CLASS_IDS);
   const classById = (id) => {
@@ -41,9 +39,9 @@ export const getAbilities = async (crew) => {
       notFurtherModified: stat.notFurtherModified,
     }))
     .sort((a, b) => a.class.localeCompare(b.class));
-};
+});
 
-export const getTitles = async () => {
+export const getTitles = cache(() => {
   const titles = Object.values(entityCrewmate.TITLES)
     .filter((t) => t.name !== "None")
     .map((title) => {
@@ -58,9 +56,9 @@ export const getTitles = async () => {
     .sort((a, b) => a.department.localeCompare(b.department));
 
   return titles;
-};
+});
 
-export const getSVGColorByClass = async (crewClass) => {
+export const getSVGColorByClass = cache((crewClass) => {
   const colors = {
     Miner: "fill-orange-400",
     Scientist: "fill-blue-400",
@@ -70,11 +68,11 @@ export const getSVGColorByClass = async (crewClass) => {
   };
 
   return colors[crewClass];
-};
+});
 
-export const getJWTToken = async (state, formData) => {
+export const getJWTToken = cache(async (state, formData) => {
   const urls = {
-    influence: process.env.INFLUENCE_API,
+    influence: influenceApiUrl,
     prerelease: process.env.INFLUENCE_API_PRERELEASE,
   };
 
@@ -98,7 +96,6 @@ export const getJWTToken = async (state, formData) => {
       headers: myHeaders,
     });
     const data = await response.json();
-    console.log("fetch data", data);
 
     return data;
   }
@@ -106,4 +103,9 @@ export const getJWTToken = async (state, formData) => {
   if (result.error) {
     return { error: result.error.format() };
   }
+});
+
+export const getCrew = async (crewId) => {
+  //TODO Auth fail
+  const ownedCrew = await influence.api.utils.crews(crewId);
 };

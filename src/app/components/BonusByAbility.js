@@ -1,13 +1,15 @@
 import { BonusClass } from "../components/BonusClass";
 import { BonusTraits } from "../components/BonusTraits";
 import { BonusTitles } from "../components/BonusTitles";
+import { getBonus } from "../utils";
 
-export default async function BonusByAbility({ bonuses }) {
+export default function BonusByAbility({ simulatedCrew }) {
+  const bonuses = getBonus(simulatedCrew);
   return (
     <div className="mb-4 sm:mb-8 lg:mb-10">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h2 className="text-base font-semibold leading-6 text-gray-900">
+          <h2 className="text-2xl font-semibold leading-6 text-gray-900">
             Bonus by Abilities
           </h2>
         </div>

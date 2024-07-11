@@ -1,34 +1,12 @@
-import Titles from "./Titles";
-import Abilities from "./Abilities";
-import Avatar from "./Avatar";
-import BonusByAbility from "./BonusByAbility";
+import LiftingState from "./LiftingState";
 
-import { getBonus, crew } from "../utils";
-
-export async function CrewList() {
-  const bonuses = getBonus(crew);
-
+export function CrewList() {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      <div className="p-4 bg-slate-200">
-        {
-          <div>
-            <div
-              role="list"
-              className="grid max-w-2xl grid-cols-1 gap-2 mx-auto mb-20 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-5 sm:gap-3 lg:gap-8"
-            >
-              {crew?.crewmates.map((crewmate) => (
-                <div key={crewmate.id} className="">
-                  <Avatar crewmate={crewmate} />
-                </div>
-              ))}
-            </div>
-
-            <BonusByAbility bonuses={bonuses} />
-            <Abilities crew={crew} />
-          </div>
-        }
-      </div>
+      <h1 className="font-bold lg:mb-10 text-slate-600 bg-slate-200">
+        Adalian Crew Simulator
+      </h1>
+      <LiftingState />
     </div>
   );
 }
