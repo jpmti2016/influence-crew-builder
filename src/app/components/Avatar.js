@@ -113,7 +113,7 @@ const classesImgs = {
         aria-hidden="true"
         focusable="false"
         viewBox="0 0 128 128"
-        className="w-5 h-5 fill-purple-400 sm:h-10 sm:w-10"
+        className="w-5 h-5 fill-slate-400 sm:h-10 sm:w-10"
       >
         <title>Pilot</title>
         <path d="M115.08,10.3C86.75,16.58,62.94,31.13,49.47,40.79l3.73-.27a12.24,12.24,0,0,1,4.1.41c12.92-8.66,32.44-19.62,55.19-25.3-5.68,22.72-16.61,42.21-25.27,55.13A12,12,0,0,1,87.68,75l-.27,3.5C97.07,65,111.56,41.28,117.81,13l.78-3.52Z"></path>

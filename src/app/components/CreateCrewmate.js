@@ -39,7 +39,7 @@ export default function CreateCrewmate() {
                   aria-describedby="collection-description"
                   name="collection"
                   type="radio"
-                  className="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-600"
+                  className="w-4 h-4 rounded text-slate-600 border-slate-300 focus:ring-slate-600"
                   defaultChecked={collect.name === "Adalian"}
                 />
               </div>
@@ -65,7 +65,7 @@ export default function CreateCrewmate() {
                   aria-describedby="classes-description"
                   name="classes"
                   type="radio"
-                  className="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-600"
+                  className="w-4 h-4 rounded text-slate-600 border-slate-300 focus:ring-slate-600"
                   defaultChecked={crewClass.name === "Miner"}
                 />
               </div>
@@ -91,7 +91,7 @@ export default function CreateCrewmate() {
                   aria-describedby="traits-description"
                   name="traits"
                   type="radio"
-                  className="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-600"
+                  className="w-4 h-4 rounded text-slate-600 border-slate-300 focus:ring-slate-600"
                   defaultChecked={trait.name === "Prospector"}
                 />
               </div>

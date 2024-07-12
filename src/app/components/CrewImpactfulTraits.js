@@ -18,7 +18,7 @@ const CrewImpactfulTraits = ({ simulatedCrew }) => {
           id="same-as-shipping"
           name="same-as-shipping"
           type="checkbox"
-          className="w-4 h-4 rounded border-slate-300 text-slate-600 focus:ring-slate-500"
+          className="w-4 h-4 rounded border-slate-300 text-slate-600 checked:ring-slate-600"
         />
         <div className="ml-2">
           <label

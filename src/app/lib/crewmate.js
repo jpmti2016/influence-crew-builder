@@ -866,7 +866,7 @@ const ABILITY_TYPES = {
 const ITEMS = {
   0: { name: "None" },
   1: { name: "Glow" },
-  2: { name: "Drone - Gray" },
+  2: { name: "Drone - slate" },
   3: { name: "Drone - Orange" },
   4: { name: "Drone - Green" },
   5: { name: "Drone - Yellow" },
@@ -893,7 +893,7 @@ const GENDERS = {
 
 const HAIR_COLORS = {
   1: { name: "Red" },
-  2: { name: "Gray" },
+  2: { name: "slate" },
   3: { name: "Brown" },
   4: { name: "Blonde" },
   5: { name: "Black" },
@@ -936,7 +936,7 @@ const HEADS = {
 
 const CLOTHES = {
   1: { name: "Light Spacesuit - Blue" },
-  2: { name: "Light Spacesuit - Purple" },
+  2: { name: "Light Spacesuit - slate" },
   3: { name: "Light Spacesuit - Orange" },
   4: { name: "Heavy Spacesuit - Red" },
   5: { name: "Heavy Spacesuit - Black" },
