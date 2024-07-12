@@ -1,10 +1,12 @@
 import { crew } from "./utils";
 import { CrewList } from "./components/CrewList";
+import Footer from "./components/Footer";
 
 export default function ManageCrew() {
   return (
-    <div className="p-4 pb-4 mb-4 bg-slate-200 sm:py-12 sm:text-3xl sm:mb-8 lg:mb-10">
+    <div className="pt-10 bg-slate-200 sm:text-3xl">
       <CrewList crew={crew} />
+      <Footer />
     </div>
   );
 }

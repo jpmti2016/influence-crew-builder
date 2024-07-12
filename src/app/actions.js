@@ -63,7 +63,7 @@ export const getSVGColorByClass = cache((crewClass) => {
     Miner: "fill-orange-400",
     Scientist: "fill-blue-400",
     Merchant: "fill-yellow-400",
-    Pilot: "fill-purple-400",
+    Pilot: "fill-slate-400",
     Engineer: "fill-red-400",
   };
 
