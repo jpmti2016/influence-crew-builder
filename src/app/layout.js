@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Adalian Crew Simulator",
-  description: "Optimize the right team for the job",
+  description: "Optimize your crew for the job",
 };
 
 export default function RootLayout({ children }) {

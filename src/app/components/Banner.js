@@ -38,9 +38,11 @@ export default function Banner() {
             <circle r={1} cx={1} cy={1} />
           </svg>
           Send your thank you to
+          <strong className="font-medium">{` <Q> jpmti2016`}</strong>
         </p>
         <div className="flex-none rounded-full bg-slate-900 px-3.5 py-1 text-sm font-semibold text-slate-50 shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900">
-          Warehouse #8,735 <span aria-hidden="true">&rarr;</span>
+          Lot #1,514,306 | Lot #1,505,190
+          {/* <span aria-hidden="true">&rarr;</span> */}
         </div>
       </div>
     </div>
