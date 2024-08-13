@@ -1,6 +1,6 @@
-import { crew } from "./utils";
-import { CrewList } from "./components/CrewList";
-import Footer from "./components/Footer";
+import { crew } from "@/app/utils";
+import { CrewList } from "@/components/CrewList";
+import Footer from "@/components/Footer";
 
 export default function ManageCrew() {
   return (
