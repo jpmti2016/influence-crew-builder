@@ -5,8 +5,10 @@ export default function ProgressBar({
 }) {
   const stored = (progress / 100) * capacity;
   const available = capacity - stored;
+
+  // mass is in g, volume is in mL
   return (
-    <div className="p-2">
+    <div className="">
       <h4 className="sr-only">Status</h4>
       <div className="flex flex-row justify-between">
         <div className="text-base font-medium text-slate-900">{label}</div>

@@ -6,8 +6,6 @@ import Departments from "./Departments";
 export default function Abilities() {
   const stats = getAbilities();
 
-  console.log("stats", stats);
-
   return (
     <div className="mb-4 sm:mb-8 lg:mb-10">
       <div className="sm:flex sm:items-center">
