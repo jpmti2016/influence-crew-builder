@@ -297,3 +297,20 @@ export const getImpacfulTraits = () => {
 
   return traits.filter((t) => t.type === "impactful");
 };
+
+export const formatVol = (mls) => {
+  return `${(mls / 1_000_000).toFixed(2)} m3`;
+};
+
+export const formatMass = (kgs) => {
+  if (kgs >= 1_000_000_000) {
+    return `${(kgs / 1_000_000_000).toFixed(2)} Mt`;
+  }
+  if (kgs >= 1_000_000) {
+    return `${(kgs / 1_000_000).toFixed(2)} kt`;
+  }
+  if (kgs >= 1_000) {
+    return `${(kgs / 1000).toFixed(1)} t`;
+  }
+  return `${kgs.toFixed(0)}kg`;
+};
