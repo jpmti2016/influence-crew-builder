@@ -3,25 +3,24 @@
 import { useState } from "react";
 import { Crewmate } from "@influenceth/sdk";
 import { v4 as uuidv4 } from "uuid";
-import { getAllCollections, TRAITS_BY_CLASS } from "../utils";
+import { getAllCollections, TRAITS_BY_CLASS, getAllDepartments, getTitlesByDepartment } from "../utils";
 import influence from "../lib/influence-sdk";
 
 export default function AddCrewmateSlot({ onAddCrewmate, disabled = false }) {
   const [selectedCollection, setSelectedCollection] = useState(Crewmate.COLLECTION_IDS.ADALIAN);
   const [selectedClass, setSelectedClass] = useState(Crewmate.CLASS_IDS.MINER);
   const [selectedTrait, setSelectedTrait] = useState(Crewmate.TRAIT_IDS.PROSPECTOR);
+  const [selectedDepartment, setSelectedDepartment] = useState(0);
   const [selectedTitle, setSelectedTitle] = useState(0);
 
   const collections = getAllCollections();
   const classes = Object.values(Crewmate.CLASS_IDS).filter(id => id !== 0);
   const availableTraits = TRAITS_BY_CLASS[selectedClass] || [];
   
-  // Get available titles for non-Adalian collections
-  const availableTitles = selectedCollection !== Crewmate.COLLECTION_IDS.ADALIAN 
-    ? Object.entries(Crewmate.TITLES).filter(([id, title]) => 
-        Number(id) > 0 && Number(id) <= 65 // Standard titles, not special ones
-      )
-    : [];
+  // Get available departments and titles for non-Adalian collections
+  const isAdalian = selectedCollection === Crewmate.COLLECTION_IDS.ADALIAN;
+  const availableDepartments = isAdalian ? [] : getAllDepartments();
+  const availableTitles = isAdalian ? [] : (selectedDepartment > 0 ? getTitlesByDepartment(selectedDepartment) : []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,9 +35,14 @@ export default function AddCrewmateSlot({ onAddCrewmate, disabled = false }) {
       src: influence.imageUrls.crewmate(Math.floor(Math.random() * 30000) + 1000),
     };
 
-    // Add title for non-Adalian collections
-    if (selectedCollection !== Crewmate.COLLECTION_IDS.ADALIAN && selectedTitle > 0) {
-      newCrewmate.titleId = selectedTitle;
+    // Add department and title for non-Adalian collections
+    if (!isAdalian) {
+      if (selectedDepartment > 0) {
+        newCrewmate.departmentId = selectedDepartment;
+      }
+      if (selectedTitle > 0) {
+        newCrewmate.titleId = selectedTitle;
+      }
     }
 
     onAddCrewmate(newCrewmate);
@@ -46,7 +50,7 @@ export default function AddCrewmateSlot({ onAddCrewmate, disabled = false }) {
 
   if (disabled) {
     return (
-      <div className="flex flex-col items-center justify-center gap-3 p-3 text-base rounded-md bg-slate-100 border-2 border-dashed border-slate-200 min-h-[280px] opacity-50">
+      <div className="flex flex-col items-center justify-center gap-3 p-3 text-base rounded-md bg-slate-100 border-2 border-dashed border-slate-200 min-h-[280px] sm:min-h-[420px] sm:h-full opacity-50">
         <span className="text-sm font-medium text-slate-400">Crew Full</span>
         <span className="text-xs text-slate-400 text-center">Maximum 5 crewmates reached</span>
       </div>
@@ -54,7 +58,7 @@ export default function AddCrewmateSlot({ onAddCrewmate, disabled = false }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 p-3 text-base rounded-md bg-slate-50 border-2 border-dashed border-slate-300 min-h-[280px]">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3 p-3 text-base rounded-md bg-slate-50 border-2 border-dashed border-slate-300 min-h-[280px] sm:min-h-[420px] sm:h-full">
       <div className="flex items-center justify-center mb-2">
         <span className="text-sm font-semibold text-slate-500">Add Crewmate</span>
       </div>
@@ -118,27 +122,53 @@ export default function AddCrewmateSlot({ onAddCrewmate, disabled = false }) {
         </select>
       </div>
 
-      {selectedCollection !== Crewmate.COLLECTION_IDS.ADALIAN && (
-        <div>
-          <label className="block text-xs font-medium text-slate-700 mb-1">
-            Title
-            {selectedCollection === Crewmate.COLLECTION_IDS.ARVAD_SPECIALIST && (
-              <span className="text-blue-600 text-xs ml-1">(+0.5)</span>
-            )}
-          </label>
-          <select
-            value={selectedTitle}
-            onChange={(e) => setSelectedTitle(Number(e.target.value))}
-            className="w-full text-xs rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500"
-          >
-            <option value={0}>None</option>
-            {availableTitles.slice(0, 10).map(([titleId, title]) => (
-              <option key={titleId} value={titleId}>
-                {title.name}
-              </option>
-            ))}
-          </select>
-        </div>
+      {!isAdalian && (
+        <>
+          <div>
+            <label className="block text-xs font-medium text-slate-700 mb-1">
+              Department
+            </label>
+            <select
+              value={selectedDepartment}
+              onChange={(e) => {
+                const deptId = Number(e.target.value);
+                setSelectedDepartment(deptId);
+                setSelectedTitle(0); // Reset title when department changes
+              }}
+              className="w-full text-xs rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500"
+            >
+              <option value={0}>No Department</option>
+              {availableDepartments.map((dept) => (
+                <option key={dept.id} value={dept.id}>
+                  {dept.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          {selectedDepartment > 0 && (
+            <div>
+              <label className="block text-xs font-medium text-slate-700 mb-1">
+                Title
+                {selectedCollection === Crewmate.COLLECTION_IDS.ARVAD_SPECIALIST && (
+                  <span className="text-blue-600 text-xs ml-1">(+0.5)</span>
+                )}
+              </label>
+              <select
+                value={selectedTitle}
+                onChange={(e) => setSelectedTitle(Number(e.target.value))}
+                className="w-full text-xs rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500"
+              >
+                <option value={0}>No Title</option>
+                {availableTitles.map((title) => (
+                  <option key={title.id} value={title.id}>
+                    {title.name} (Tier {title.tier})
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </>
       )}
 
       <button

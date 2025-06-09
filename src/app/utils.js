@@ -104,6 +104,7 @@ export const crew = [
     collectionId: Crewmate.COLLECTION_IDS.ARVAD_SPECIALIST,
     classId: Crewmate.CLASS_IDS.ENGINEER,
     traitIds: [Crewmate.TRAIT_IDS.REFINER],
+    departmentId: 9, // Engineering
     titleId: 61, // Head of Engineering - tier 5
     src: influence.imageUrls.crewmate(20709),
   },
@@ -112,6 +113,7 @@ export const crew = [
     collectionId: Crewmate.COLLECTION_IDS.ARVAD_CITIZEN,
     classId: Crewmate.CLASS_IDS.SCIENTIST,
     traitIds: [Crewmate.TRAIT_IDS.DIETITIAN],
+    departmentId: 2, // Education
     titleId: 54, // Provost - tier 5
     src: influence.imageUrls.crewmate(23365),
   },
@@ -120,6 +122,7 @@ export const crew = [
     collectionId: Crewmate.COLLECTION_IDS.ARVAD_LEADERSHIP,
     classId: Crewmate.CLASS_IDS.MERCHANT,
     traitIds: [Crewmate.TRAIT_IDS.LOGISTICIAN],
+    departmentId: 13, // Management
     titleId: 65, // High Commander - tier 5
     src: influence.imageUrls.crewmate(23857),
   },
@@ -337,4 +340,25 @@ export const getAllCollections = () => {
     id,
     ...getCollectionInfo(id)
   }));
+};
+
+export const getDepartmentInfo = (departmentId) => {
+  return Crewmate.DEPARTMENTS[departmentId] || { name: "Unknown Department" };
+};
+
+export const getAllDepartments = () => {
+  return Object.entries(Crewmate.DEPARTMENTS).map(([id, dept]) => ({
+    id: Number(id),
+    ...dept
+  }));
+};
+
+export const getTitlesByDepartment = (departmentId) => {
+  return Object.entries(Crewmate.TITLES)
+    .filter(([titleId, title]) => title.department === departmentId)
+    .map(([titleId, title]) => ({
+      id: Number(titleId),
+      ...title
+    }))
+    .sort((a, b) => a.tier - b.tier);
 };
