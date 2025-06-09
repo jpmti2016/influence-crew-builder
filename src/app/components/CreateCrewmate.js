@@ -7,6 +7,7 @@ import {
   getBonus,
   bonusByAbilityId,
   TRAITS_BY_CLASS,
+  getAllCollections,
 } from "../utils";
 
 export default function CreateCrewmate() {
@@ -21,38 +22,40 @@ export default function CreateCrewmate() {
   const [traits, setTraits] = useState([]);
 
   useEffect(() => {
-    setCollection(Object.values(Crewmate.COLLECTIONS));
+    setCollection(getAllCollections());
     setClasses(Object.values(Crewmate.CLASSES));
     setTraits(Object.values(Crewmate.TRAITS));
   }, []);
 
   return (
     <div className="p-4 bg-slate-200">
-      <div className="flex flex-col p-4 mb-2 bg-slate-300 sm:flex-row">
-        {collection
-          ?.filter((c) => c.name === "Adalian")
-          .map((collect) => (
-            <div className="relative flex items-start " key={collect.name}>
-              <div className="flex items-center h-6">
-                <input
-                  id={collection.name}
-                  aria-describedby="collection-description"
-                  name="collection"
-                  type="radio"
-                  className="w-4 h-4 rounded text-slate-600 border-slate-300 focus:ring-slate-600"
-                  defaultChecked={collect.name === "Adalian"}
-                />
-              </div>
-              <div className="ml-3 text-sm leading-6">
-                <label
-                  htmlFor={collection.name}
-                  className="font-medium text-slate-900"
-                >
-                  {collect.name}
-                </label>
-              </div>
+      <div className="flex flex-col gap-4 p-4 mb-2 bg-slate-300 sm:grid sm:grid-cols-2">
+        <h3 className="col-span-full text-lg font-semibold text-slate-900 mb-2">Collections</h3>
+        {collection?.map((collect) => (
+          <div className="relative flex items-start" key={collect.name}>
+            <div className="flex items-center h-6">
+              <input
+                id={collect.name}
+                aria-describedby="collection-description"
+                name="collection"
+                type="radio"
+                className="w-4 h-4 rounded text-slate-600 border-slate-300 focus:ring-slate-600"
+                defaultChecked={collect.name === "Adalian"}
+              />
             </div>
-          ))}
+            <div className="ml-3 text-sm leading-6">
+              <label
+                htmlFor={collect.name}
+                className={`font-medium ${collect.textColor}`}
+              >
+                {collect.name}
+              </label>
+              <p className="text-slate-600 text-xs">
+                {collect.description}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
       <div className="flex flex-col flex-wrap gap-4 p-4 mb-2 bg-slate-300 sm:flex-row">
         {classes
