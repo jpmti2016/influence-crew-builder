@@ -101,23 +101,29 @@ export const crew = [
   },
   {
     id: uuidv4(),
-    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    collectionId: Crewmate.COLLECTION_IDS.ARVAD_SPECIALIST,
     classId: Crewmate.CLASS_IDS.ENGINEER,
     traitIds: [Crewmate.TRAIT_IDS.REFINER],
+    departmentId: 9, // Engineering
+    titleId: 61, // Head of Engineering - tier 5
     src: influence.imageUrls.crewmate(20709),
   },
   {
     id: uuidv4(),
-    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    collectionId: Crewmate.COLLECTION_IDS.ARVAD_CITIZEN,
     classId: Crewmate.CLASS_IDS.SCIENTIST,
     traitIds: [Crewmate.TRAIT_IDS.DIETITIAN],
+    departmentId: 2, // Education
+    titleId: 54, // Provost - tier 5
     src: influence.imageUrls.crewmate(23365),
   },
   {
     id: uuidv4(),
-    collectionId: Crewmate.COLLECTION_IDS.ADALIAN,
+    collectionId: Crewmate.COLLECTION_IDS.ARVAD_LEADERSHIP,
     classId: Crewmate.CLASS_IDS.MERCHANT,
     traitIds: [Crewmate.TRAIT_IDS.LOGISTICIAN],
+    departmentId: 13, // Management
+    titleId: 65, // High Commander - tier 5
     src: influence.imageUrls.crewmate(23857),
   },
   {
@@ -296,4 +302,63 @@ export const getImpacfulTraits = () => {
   });
 
   return traits.filter((t) => t.type === "impactful");
+};
+
+export const getCollectionInfo = (collectionId) => {
+  const collections = {
+    [Crewmate.COLLECTION_IDS.ARVAD_SPECIALIST]: {
+      name: "Arvad Specialist",
+      description: "Specialists with enhanced department expertise (+0.5 tier bonus)",
+      color: "bg-blue-500",
+      textColor: "text-blue-700",
+    },
+    [Crewmate.COLLECTION_IDS.ARVAD_CITIZEN]: {
+      name: "Arvad Citizen", 
+      description: "Standard Arvadian citizens with balanced abilities",
+      color: "bg-green-500",
+      textColor: "text-green-700",
+    },
+    [Crewmate.COLLECTION_IDS.ARVAD_LEADERSHIP]: {
+      name: "Arvad Leadership",
+      description: "Leadership-focused Arvadians with command bonuses",
+      color: "bg-purple-500", 
+      textColor: "text-purple-700",
+    },
+    [Crewmate.COLLECTION_IDS.ADALIAN]: {
+      name: "Adalian",
+      description: "Native Adalians with specialized class traits",
+      color: "bg-orange-500",
+      textColor: "text-orange-700",
+    },
+  };
+  
+  return collections[collectionId] || collections[Crewmate.COLLECTION_IDS.ADALIAN];
+};
+
+export const getAllCollections = () => {
+  return Object.values(Crewmate.COLLECTION_IDS).map(id => ({
+    id,
+    ...getCollectionInfo(id)
+  }));
+};
+
+export const getDepartmentInfo = (departmentId) => {
+  return Crewmate.DEPARTMENTS[departmentId] || { name: "Unknown Department" };
+};
+
+export const getAllDepartments = () => {
+  return Object.entries(Crewmate.DEPARTMENTS).map(([id, dept]) => ({
+    id: Number(id),
+    ...dept
+  }));
+};
+
+export const getTitlesByDepartment = (departmentId) => {
+  return Object.entries(Crewmate.TITLES)
+    .filter(([titleId, title]) => title.department === departmentId)
+    .map(([titleId, title]) => ({
+      id: Number(titleId),
+      ...title
+    }))
+    .sort((a, b) => a.tier - b.tier);
 };
