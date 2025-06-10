@@ -1,21 +1,32 @@
 'use client'
 
-import { useState } from 'react'
-import { useAccounts, useEthereumWallet, useStarknetWallet } from '../lib/wallet-hooks'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAccounts, useEthereumWallet, useStarknetWallet, useDisconnectAll } from '../lib/wallet-hooks'
 
 export default function WalletConnection() {
   const [showConnectors, setShowConnectors] = useState(false)
+  const [isRedirecting, setIsRedirecting] = useState(false)
+  const router = useRouter()
   const accounts = useAccounts()
   const ethereumWallet = useEthereumWallet()
   const starknetWallet = useStarknetWallet()
+  const { disconnectAll } = useDisconnectAll()
 
-  const handleDisconnect = () => {
-    if (accounts.ethereum) {
-      ethereumWallet.disconnect()
+  // Redirect to main page when wallet is connected
+  useEffect(() => {
+    if (accounts.isConnected && !isRedirecting) {
+      console.log('Wallet connected, redirecting to home page...')
+      setIsRedirecting(true)
+      // Small delay to ensure connection is stable
+      setTimeout(() => {
+        router.replace('/')
+      }, 500)
     }
-    if (accounts.starknet) {
-      starknetWallet.disconnect()
-    }
+  }, [accounts.isConnected, router, isRedirecting])
+
+  const handleDisconnect = async () => {
+    await disconnectAll()
   }
 
   const formatAddress = (address) => {
@@ -24,6 +35,17 @@ export default function WalletConnection() {
   }
 
   if (accounts.isConnected) {
+    if (isRedirecting) {
+      return (
+        <div className="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Redirecting to your crews...</p>
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div className="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto">
         <h2 className="text-xl font-bold mb-4 text-center">Connected Wallets</h2>

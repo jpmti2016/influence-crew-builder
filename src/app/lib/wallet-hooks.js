@@ -8,11 +8,21 @@ export const useAccounts = () => {
   const { address: ethereumAddress, isConnected: isEthereumConnected } = useWagmiAccount()
   const { address: starknetAddress, isConnected: isStarknetConnected } = useStarknetAccount()
 
-  return {
+  const accounts = {
     ethereum: isEthereumConnected ? { address: ethereumAddress } : undefined,
     starknet: isStarknetConnected ? { address: starknetAddress } : undefined,
     isConnected: isEthereumConnected || isStarknetConnected,
   }
+
+  // Debug logging (only when connection state changes)
+  if (accounts.isConnected) {
+    console.log('Wallet connected:', {
+      ethereum: accounts.ethereum ? 'Connected' : 'Not connected',
+      starknet: accounts.starknet ? 'Connected' : 'Not connected'
+    })
+  }
+
+  return accounts
 }
 
 // Hook for Ethereum wallet connections (Metamask, etc.)
@@ -86,4 +96,29 @@ export const useStarknetWallet = () => {
     connectBraavos,
     connectors,
   }
+}
+
+// Hook for disconnecting all wallets
+export const useDisconnectAll = () => {
+  const { disconnect: disconnectEthereum } = useWagmiDisconnect()
+  const { disconnect: disconnectStarknet } = useStarknetDisconnect()
+  const accounts = useAccounts()
+
+  const disconnectAll = async () => {
+    try {
+      // Disconnect Ethereum wallets if connected
+      if (accounts.ethereum) {
+        await disconnectEthereum()
+      }
+
+      // Disconnect StarkNet wallets if connected
+      if (accounts.starknet) {
+        await disconnectStarknet()
+      }
+    } catch (error) {
+      console.error('Error disconnecting wallets:', error)
+    }
+  }
+
+  return { disconnectAll, isAnyConnected: accounts.isConnected }
 }
