@@ -163,7 +163,15 @@ export default function CrewmateGrid({ crewmates, onAddToSimulator, isDemo = fal
                 {/* Action Button */}
                 <div className="p-4 border-t bg-gray-50">
                   <button
-                    onClick={() => onAddToSimulator(crewmate)}
+                    onClick={() => {
+                      console.log('Button clicked for crewmate:', crewmate.id, crewmate)
+                      console.log('onAddToSimulator function:', typeof onAddToSimulator)
+                      if (onAddToSimulator) {
+                        onAddToSimulator(crewmate)
+                      } else {
+                        console.error('onAddToSimulator is not defined!')
+                      }
+                    }}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-md transition-colors"
                   >
                     {isDemo ? 'Try in Simulator' : 'Add to Simulator'}

@@ -61,9 +61,17 @@ This is a Next.js application for building and managing crews in the Influence g
 
 ## Environment Setup
 Copy `.env.example` to `.env.local` and configure:
+
+### Server-Only Variables (Secure)
 - `INFLUENCE_API_ACCESS_TOKEN`: Required for Influence API access
-- `NEXT_PUBLIC_ALCHEMY_API_KEY`: Optional, for Ethereum RPC via Alchemy
+- `ALCHEMY_API_KEY`: Optional, for server-side Ethereum RPC calls
+
+### Client-Safe Variables (Public)
 - `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`: Optional, for WalletConnect support
+- `NEXT_PUBLIC_TEST_STARKNET_ADDRESS`: Optional, for development testing
+
+### Security Note
+⚠️ **NEVER use `NEXT_PUBLIC_` prefix for sensitive data like API keys or tokens** - these are exposed to the client-side code and visible in the browser!
 
 ## Testing & Quality
 - Run `npm run lint` before committing changes

@@ -9,28 +9,34 @@ export const useCrewSimulator = () => {
 
   // Add crewmate to simulator
   const addToSimulator = useCallback((crewmate) => {
+    console.log('Adding crewmate to simulator:', crewmate.id, 'Current simulator open:', isSimulatorOpen)
+    
     setSimulatedCrew(prev => {
+      console.log('Current crew before adding:', prev.length, 'crewmates')
+      
       // Check if crewmate is already in simulator
       const isAlreadyAdded = prev.some(cm => cm.id === crewmate.id)
       
       if (isAlreadyAdded) {
+        console.log('Crewmate already added, skipping')
         return prev // Don't add duplicates
       }
 
       // Limit to 5 crewmates (typical crew size)
       if (prev.length >= 5) {
+        console.log('Simulator full, replacing first crewmate')
         // Replace the first crewmate with the new one
         return [crewmate, ...prev.slice(1)]
       }
 
+      console.log('Adding crewmate to simulator')
       return [...prev, crewmate]
     })
     
-    // Open simulator if it's not already open
-    if (!isSimulatorOpen) {
-      setIsSimulatorOpen(true)
-    }
-  }, [isSimulatorOpen])
+    // Always open simulator when adding a crewmate
+    console.log('Opening simulator modal')
+    setIsSimulatorOpen(true)
+  }, [])
 
   // Remove crewmate from simulator
   const removeFromSimulator = useCallback((crewmateId) => {
