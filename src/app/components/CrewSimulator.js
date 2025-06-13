@@ -14,9 +14,11 @@ export default function CrewSimulator({
   if (!isOpen) return null
 
   const formatCrewmate = (crewmate) => {
-    const crewmateClass = Crewmate.getClass(crewmate.class)
-    const primaryTrait = crewmate.traits?.[0] ? Crewmate.getTrait(crewmate.traits[0]) : null
-    const title = crewmate.title ? Crewmate.getTitle(crewmate.title) : null
+    const crewmateClass = Crewmate.getClass(crewmate.classId || crewmate.class)
+    const traits = crewmate.traitIds || crewmate.traits || []
+    const titleId = crewmate.titleId || crewmate.title
+    const primaryTrait = traits?.[0] ? Crewmate.getTrait(traits[0]) : null
+    const title = titleId ? Crewmate.getTitle(titleId) : null
     
     return {
       ...crewmate,
@@ -109,7 +111,7 @@ export default function CrewSimulator({
 
                       {/* Collection Badge */}
                       <div className="flex items-center justify-between mb-3 pr-6">
-                        <CollectionBadge collectionId={crewmate.collection} size="sm" />
+                        <CollectionBadge collectionId={crewmate.collectionId || crewmate.collection} size="sm" />
                         {formatted.titleName && (
                           <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-1 rounded">
                             {formatted.titleName}

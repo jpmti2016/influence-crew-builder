@@ -40,14 +40,14 @@ export default function TestApi() {
   }
 
   return (
-    <div className="p-8">
+    <div>
       <h1 className="text-2xl font-bold mb-6">API Test Page</h1>
       
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
         <h3 className="font-semibold text-blue-800 mb-2">Setup Instructions:</h3>
         <ol className="text-sm text-blue-700 space-y-1">
           <li>1. Add your actual StarkNet address to <code className="bg-blue-100 px-1 rounded">.env.local</code>:</li>
-          <li className="ml-4"><code className="bg-blue-100 px-1 rounded">NEXT_PUBLIC_TEST_STARKNET_ADDRESS="YOUR_STARKNET_ADDRESS"</code></li>
+          <li className="ml-4"><code className="bg-blue-100 px-1 rounded">NEXT_PUBLIC_TEST_STARKNET_ADDRESS=&quot;YOUR_STARKNET_ADDRESS&quot;</code></li>
           <li>2. Replace the placeholder address below with your real StarkNet address that owns crewmates</li>
           <li>3. Check browser console for detailed logs</li>
           <li>4. Note: Only StarkNet addresses are supported for standalone crewmate fetching</li>

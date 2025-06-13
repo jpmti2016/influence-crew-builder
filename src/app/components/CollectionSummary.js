@@ -1,18 +1,20 @@
 "use client";
 import { useState } from "react";
 import { Crewmate } from "@influenceth/sdk";
-import { getAllCollections, getDepartmentInfo } from "../utils";
+import { getDepartmentInfo, normalizeCrewmateFormat } from "../utils";
 import CollectionBadge from "./CollectionBadge";
 
 export default function CollectionSummary({ simulatedCrew }) {
   const [showSummary, setShowSummary] = useState(false);
-  const collections = getAllCollections();
   const crewByCollection = simulatedCrew.reduce((acc, crewmate) => {
-    const collectionId = crewmate.collectionId;
-    if (!acc[collectionId]) {
+    const normalized = normalizeCrewmateFormat(crewmate);
+    const collectionId = normalized.collectionId;
+    if (collectionId && !acc[collectionId]) {
       acc[collectionId] = [];
     }
-    acc[collectionId].push(crewmate);
+    if (collectionId) {
+      acc[collectionId].push(normalized);
+    }
     return acc;
   }, {});
 
@@ -71,7 +73,7 @@ export default function CollectionSummary({ simulatedCrew }) {
       <div className="flex flex-row items-baseline mb-4">
         <input
           checked={showSummary}
-          onChange={(e) => setShowSummary((prev) => !prev)}
+          onChange={() => setShowSummary((prev) => !prev)}
           id="show-collection-summary"
           name="show-collection-summary"
           type="checkbox"
@@ -95,7 +97,6 @@ export default function CollectionSummary({ simulatedCrew }) {
         <>
           <div className="space-y-4">
             {Object.entries(crewByCollection).map(([collectionId, crewmates]) => {
-              const collection = collections.find(c => c.id === Number(collectionId));
               const benefits = getCollectionBenefits(Number(collectionId), crewmates);
               
               return (

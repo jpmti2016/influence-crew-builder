@@ -8,6 +8,9 @@ import { useCrewSimulator } from './lib/simulator-hooks'
 import { defaultAdalianCrew } from './lib/default-crew'
 import CrewmateGrid from "./components/CrewmateGrid"
 import CrewSimulator from "./components/CrewSimulator"
+import BonusByAbility from "./components/BonusByAbility"
+import CollectionSummary from "./components/CollectionSummary"
+import CrewImpactfulTraits from "./components/CrewImpactfulTraits"
 import Footer from "./components/Footer"
 
 export default function Home() {
@@ -16,7 +19,7 @@ export default function Home() {
   const { disconnectAll } = useDisconnectAll()
   const [isRedirecting, setIsRedirecting] = useState(false)
   const { crewmates, loading, error } = useCrewmates(
-    accounts.starknet?.address || accounts.ethereum?.address
+    accounts.starknet?.address
   )
   
   // Crew simulator
@@ -34,20 +37,14 @@ export default function Home() {
   // Don't redirect when not connected - show default crew instead
   // This allows users to explore the interface before connecting
 
-  // Handle wallet change/logout
-  const handleChangeWallet = async () => {
+  // Handle wallet disconnect
+  const handleDisconnectWallet = async () => {
     if (accounts.isConnected) {
       setIsRedirecting(true)
       // Clear the crew simulator when disconnecting
       clearSimulator()
+      // Note: disconnectAll() now handles page reload automatically
       await disconnectAll()
-      // Small delay to ensure disconnect completes
-      setTimeout(() => {
-        setIsRedirecting(false)
-        router.push('/login')
-      }, 500)
-    } else {
-      router.push('/login')
     }
   }
 
@@ -56,9 +53,9 @@ export default function Home() {
   const isShowingDefault = !accounts.isConnected
 
   return (
-    <div className="pt-10 bg-slate-200 sm:text-3xl">
+    <div>
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+      <div className="mb-8">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex justify-between items-center">
             <div>
@@ -70,9 +67,6 @@ export default function Home() {
                   <p>Explore crew composition with sample Adalian crewmates</p>
                 ) : (
                   <>
-                    {accounts.ethereum && (
-                      <p>Ethereum: {accounts.ethereum.address.slice(0, 6)}...{accounts.ethereum.address.slice(-4)}</p>
-                    )}
                     {accounts.starknet && (
                       <p>StarkNet: {accounts.starknet.address.slice(0, 6)}...{accounts.starknet.address.slice(-4)}</p>
                     )}
@@ -100,11 +94,11 @@ export default function Home() {
                 </button>
               ) : (
                 <button
-                  onClick={handleChangeWallet}
+                  onClick={handleDisconnectWallet}
                   disabled={isRedirecting}
-                  className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isRedirecting ? 'Disconnecting...' : 'Change Wallet'}
+                  {isRedirecting ? 'Disconnecting...' : 'Disconnect'}
                 </button>
               )}
             </div>
@@ -158,10 +152,10 @@ export default function Home() {
               You don&apos;t have any crewmates associated with this wallet address.
             </p>
             <button
-              onClick={() => router.push('/manage-crew')}
+              onClick={() => router.push('/login')}
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors"
             >
-              Explore Game
+              Connect Wallet
             </button>
           </div>
         </div>
@@ -185,6 +179,20 @@ export default function Home() {
         onClose={closeSimulator}
         stats={getSimulatorStats()}
       />
+
+      {/* Advanced Analytics Section - shown when crew simulator has crewmates */}
+      {simulatedCrew.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-6">
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Crew Analytics</h2>
+            <div className="space-y-6">
+              <CollectionSummary simulatedCrew={simulatedCrew} />
+              <CrewImpactfulTraits simulatedCrew={simulatedCrew} />
+              <BonusByAbility simulatedCrew={simulatedCrew} />
+            </div>
+          </div>
+        </div>
+      )}
       
       <Footer />
     </div>

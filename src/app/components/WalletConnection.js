@@ -2,14 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAccounts, useEthereumWallet, useStarknetWallet, useDisconnectAll } from '../lib/wallet-hooks'
+import { useAccounts, useStarknetWallet, useDisconnectAll } from '../lib/wallet-hooks'
 
 export default function WalletConnection() {
   const [showConnectors, setShowConnectors] = useState(false)
   const [isRedirecting, setIsRedirecting] = useState(false)
   const router = useRouter()
   const accounts = useAccounts()
-  const ethereumWallet = useEthereumWallet()
   const starknetWallet = useStarknetWallet()
   const { disconnectAll } = useDisconnectAll()
 
@@ -48,22 +47,14 @@ export default function WalletConnection() {
 
     return (
       <div className="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto">
-        <h2 className="text-xl font-bold mb-4 text-center">Connected Wallets</h2>
+        <h2 className="text-xl font-bold mb-4 text-center">Connected Wallet</h2>
         
         <div className="space-y-4">
-          {accounts.ethereum && (
-            <div className="border rounded-lg p-4 bg-blue-50">
-              <h3 className="font-semibold text-blue-800 mb-2">Ethereum Network</h3>
-              <p className="text-sm text-gray-600">Address: {formatAddress(accounts.ethereum.address)}</p>
-              <p className="text-xs text-gray-500 mt-1">Connected via Metamask/Ethereum wallet</p>
-            </div>
-          )}
-          
           {accounts.starknet && (
             <div className="border rounded-lg p-4 bg-purple-50">
               <h3 className="font-semibold text-purple-800 mb-2">StarkNet Network</h3>
               <p className="text-sm text-gray-600">Address: {formatAddress(accounts.starknet.address)}</p>
-              <p className="text-xs text-gray-500 mt-1">Connected via Argent/StarkNet wallet</p>
+              <p className="text-xs text-gray-500 mt-1">Connected via Argent wallet</p>
             </div>
           )}
         </div>
@@ -72,7 +63,7 @@ export default function WalletConnection() {
           onClick={handleDisconnect}
           className="w-full mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors"
         >
-          Disconnect All Wallets
+          Disconnect & Clear Session
         </button>
       </div>
     )
@@ -91,28 +82,23 @@ export default function WalletConnection() {
         </button>
       ) : (
         <div className="space-y-4">
-          <div className="border rounded-lg p-4">
-            <h3 className="font-semibold text-blue-800 mb-3">Ethereum Wallets</h3>
-            <div className="space-y-2">
-              <button
-                onClick={ethereumWallet.connectMetamask}
-                disabled={ethereumWallet.isPending}
-                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded transition-colors disabled:opacity-50"
-              >
-                {ethereumWallet.isPending ? 'Connecting...' : 'Connect Metamask'}
-              </button>
-              <button
-                onClick={ethereumWallet.connectInjected}
-                disabled={ethereumWallet.isPending}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-colors disabled:opacity-50"
-              >
-                {ethereumWallet.isPending ? 'Connecting...' : 'Connect Injected Wallet'}
-              </button>
+          {/* Security Notice */}
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+            <div className="flex items-start gap-2">
+              <svg className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+              </svg>
+              <div>
+                <p className="text-sm font-medium text-amber-800">Security Notice</p>
+                <p className="text-xs text-amber-700 mt-1">
+                  Disconnecting will clear all session data and reload the page for security. Always verify transactions in your wallet.
+                </p>
+              </div>
             </div>
           </div>
-
+          
           <div className="border rounded-lg p-4">
-            <h3 className="font-semibold text-purple-800 mb-3">StarkNet Wallets</h3>
+            <h3 className="font-semibold text-purple-800 mb-3">Argent Wallet</h3>
             <div className="space-y-2">
               <button
                 onClick={starknetWallet.connectArgent}
@@ -120,13 +106,6 @@ export default function WalletConnection() {
                 className="w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded transition-colors disabled:opacity-50"
               >
                 {starknetWallet.isPending ? 'Connecting...' : 'Connect Argent'}
-              </button>
-              <button
-                onClick={starknetWallet.connectBraavos}
-                disabled={starknetWallet.isPending}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition-colors disabled:opacity-50"
-              >
-                {starknetWallet.isPending ? 'Connecting...' : 'Connect Braavos'}
               </button>
             </div>
           </div>

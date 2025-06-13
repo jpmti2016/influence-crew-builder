@@ -1,23 +1,19 @@
 'use client'
 
-import { useAccount as useWagmiAccount, useConnect as useWagmiConnect, useDisconnect as useWagmiDisconnect } from 'wagmi'
 import { useAccount as useStarknetAccount, useConnect as useStarknetConnect, useDisconnect as useStarknetDisconnect } from '@starknet-react/core'
 
-// Combined hook for accessing both Ethereum and StarkNet accounts
+// Hook for accessing StarkNet account only
 export const useAccounts = () => {
-  const { address: ethereumAddress, isConnected: isEthereumConnected } = useWagmiAccount()
   const { address: starknetAddress, isConnected: isStarknetConnected } = useStarknetAccount()
 
   const accounts = {
-    ethereum: isEthereumConnected ? { address: ethereumAddress } : undefined,
     starknet: isStarknetConnected ? { address: starknetAddress } : undefined,
-    isConnected: isEthereumConnected || isStarknetConnected,
+    isConnected: isStarknetConnected,
   }
 
   // Debug logging (only when connection state changes)
   if (accounts.isConnected) {
-    console.log('Wallet connected:', {
-      ethereum: accounts.ethereum ? 'Connected' : 'Not connected',
+    console.log('StarkNet wallet connected:', {
       starknet: accounts.starknet ? 'Connected' : 'Not connected'
     })
   }
@@ -25,42 +21,6 @@ export const useAccounts = () => {
   return accounts
 }
 
-// Hook for Ethereum wallet connections (Metamask, etc.)
-export const useEthereumWallet = () => {
-  const { connect, connectors, isPending } = useWagmiConnect()
-  const { disconnect } = useWagmiDisconnect()
-  const { address, isConnected } = useWagmiAccount()
-
-  const connectMetamask = () => {
-    const metamaskConnector = connectors.find(connector => 
-      connector.name.toLowerCase().includes('metamask') || 
-      connector.id === 'metaMask'
-    )
-    if (metamaskConnector) {
-      connect({ connector: metamaskConnector })
-    }
-  }
-
-  const connectInjected = () => {
-    const injectedConnector = connectors.find(connector => 
-      connector.id === 'injected'
-    )
-    if (injectedConnector) {
-      connect({ connector: injectedConnector })
-    }
-  }
-
-  return {
-    address,
-    isConnected,
-    isPending,
-    connect,
-    disconnect,
-    connectMetamask,
-    connectInjected,
-    connectors,
-  }
-}
 
 // Hook for StarkNet wallet connections (Argent, Braavos, etc.)
 export const useStarknetWallet = () => {
@@ -69,22 +29,21 @@ export const useStarknetWallet = () => {
   const { address, isConnected } = useStarknetAccount()
 
   const connectArgent = () => {
+    console.log('🔗 Attempting to connect Argent wallet...')
+    console.log('Available connectors:', connectors.map(c => c.name))
+    
     const argentConnector = connectors.find(connector => 
       connector.name.toLowerCase().includes('argent')
     )
+    
     if (argentConnector) {
+      console.log('✅ Found Argent connector:', argentConnector.name)
       connect({ connector: argentConnector })
+    } else {
+      console.error('❌ Argent connector not found!')
     }
   }
 
-  const connectBraavos = () => {
-    const braavosConnector = connectors.find(connector => 
-      connector.name.toLowerCase().includes('braavos')
-    )
-    if (braavosConnector) {
-      connect({ connector: braavosConnector })
-    }
-  }
 
   return {
     address,
@@ -93,30 +52,73 @@ export const useStarknetWallet = () => {
     connect,
     disconnect,
     connectArgent,
-    connectBraavos,
     connectors,
   }
 }
 
-// Hook for disconnecting all wallets
+// Hook for disconnecting StarkNet wallet
 export const useDisconnectAll = () => {
-  const { disconnect: disconnectEthereum } = useWagmiDisconnect()
   const { disconnect: disconnectStarknet } = useStarknetDisconnect()
+  const { connect, connectors } = useStarknetConnect()
   const accounts = useAccounts()
 
   const disconnectAll = async () => {
     try {
-      // Disconnect Ethereum wallets if connected
-      if (accounts.ethereum) {
-        await disconnectEthereum()
-      }
-
-      // Disconnect StarkNet wallets if connected
+      // Disconnect StarkNet wallet if connected
       if (accounts.starknet) {
+        console.log('🔓 Disconnecting StarkNet wallet...')
+        
+        // First, try the standard disconnect
         await disconnectStarknet()
+        
+        // Clear ALL possible wallet-related data from localStorage and sessionStorage
+        const walletKeys = [
+          'starknet-last-wallet',
+          'wallet-connect-session', 
+          'starknetkit_lastConnectedWallet',
+          'starknetkit_lastConnectedWallets',
+          'argent-wallet-connect',
+          'starknet-react',
+          'get-starknet-last-wallet',
+          'wallet-autoconnect',
+          'connector-cache'
+        ]
+        
+        walletKeys.forEach(key => {
+          try {
+            localStorage.removeItem(key)
+            sessionStorage.removeItem(key)
+          } catch (e) {
+            // Ignore errors for individual keys
+          }
+        })
+        
+        // Clear any starknet-related keys that might exist
+        Object.keys(localStorage).forEach(key => {
+          if (key.toLowerCase().includes('starknet') || key.toLowerCase().includes('argent')) {
+            try {
+              localStorage.removeItem(key)
+            } catch (e) {
+              // Ignore errors
+            }
+          }
+        })
+        
+        // Force a page reload to ensure complete disconnection
+        // This is the most reliable way to ensure wallet state is cleared
+        setTimeout(() => {
+          console.log('🔄 Forcing page reload to ensure complete wallet disconnection...')
+          window.location.reload()
+        }, 500)
+        
+        console.log('✅ Cleared all wallet data and forcing reload')
       }
     } catch (error) {
-      console.error('Error disconnecting wallets:', error)
+      console.error('Error disconnecting StarkNet wallet:', error)
+      // If standard disconnect fails, still try to clear data and reload
+      setTimeout(() => {
+        window.location.reload()
+      }, 500)
     }
   }
 

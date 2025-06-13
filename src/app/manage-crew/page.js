@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 
 export default function ManageCrew() {
   return (
-    <div className="pt-10 bg-slate-200 sm:text-3xl">
+    <div>
       <CrewList crew={crew} />
       <Footer />
     </div>

@@ -47,17 +47,17 @@ This is a Next.js application for building and managing crews in the Influence g
 - Created crew management functionality
 - Added token authentication flow
 - Developed inventory loading simulation
-- **NEW: Added blockchain wallet connection support**
-  - Metamask and Ethereum wallet integration via Wagmi
+- **NEW: Added StarkNet wallet connection support**
   - Argent and StarkNet wallet support via StarkNet React
-  - Dual-network wallet management with unified UI
+  - StarkNet-focused blockchain integration for crewmate ownership
+  - Standalone crewmate fetching from StarkNet addresses
 
 ## Wallet Integration
-- **Ethereum**: Metamask, injected wallets via Wagmi
-- **StarkNet**: Argent, Braavos via @starknet-react/core
-- **Configuration**: Wagmi config in `src/app/lib/wagmi-config.js`
+- **StarkNet Only**: Argent, Braavos via @starknet-react/core
+- **Configuration**: StarkNet config in `src/app/lib/starknet-config.js`
 - **Components**: WalletConnection component in `src/app/components/`
 - **Hooks**: Custom wallet hooks in `src/app/lib/wallet-hooks.js`
+- **Focus**: Standalone crewmate fetching works exclusively with StarkNet addresses
 
 ## Environment Setup
 Copy `.env.example` to `.env.local` and configure:
@@ -78,4 +78,4 @@ Copy `.env.example` to `.env.local` and configure:
 - Ensure TypeScript compilation passes with `npm run build`
 - Test crew building functionality across different collections
 - Verify responsive design on various screen sizes
-- Test wallet connections on both Ethereum and StarkNet networks
+- Test StarkNet wallet connections with Argent and Braavos

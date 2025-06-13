@@ -1,20 +1,23 @@
 "use client";
 import { useState } from "react";
-import { getImpacfulTraits } from "../utils";
+import { getImpacfulTraits, normalizeCrewmateFormat } from "../utils";
 
 const CrewImpactfulTraits = ({ simulatedCrew }) => {
   const [showTraits, setShowTraits] = useState(true);
   const traits = getImpacfulTraits();
   const simulatedCrewTraits = simulatedCrew?.map(
-    (cremate) => cremate.traitIds[0]
-  );
+    (crewmate) => {
+      const normalized = normalizeCrewmateFormat(crewmate);
+      return normalized.traitIds && normalized.traitIds.length > 0 ? normalized.traitIds[0] : null;
+    }
+  ).filter(trait => trait !== null);
 
   return (
     <div className="p-4 mb-4 sm:mb-8 lg:mb-10 bg-slate-300">
       <div className="flex flex-row items-baseline">
         <input
           defaultChecked={showTraits}
-          onChange={(e) => setShowTraits((prev) => !prev)}
+          onChange={() => setShowTraits((prev) => !prev)}
           id="same-as-shipping"
           name="same-as-shipping"
           type="checkbox"

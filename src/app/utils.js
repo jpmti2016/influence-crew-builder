@@ -275,9 +275,62 @@ export const bonusByAbilityId = (abilityId, crew) => {
   return details;
 };
 
+// Normalize crewmate data format for consistent usage
+export const normalizeCrewmateFormat = (crewmate) => {
+  // Handle API format vs local format
+  const isApiFormat = crewmate.Crewmate && typeof crewmate.Crewmate === 'object';
+  
+  if (isApiFormat) {
+    // API format: { Crewmate: { class, collection, traits, ... }, crewInfo, isInCrew, ... }
+    const normalized = {
+      id: crewmate.id || `api-${crewmate.Crewmate.collection}-${crewmate.Crewmate.class}-${Date.now()}-${Math.random()}`,
+      collectionId: crewmate.Crewmate.collection,
+      classId: crewmate.Crewmate.class,
+      traitIds: crewmate.Crewmate.traits || [],
+      departmentId: crewmate.departmentId,
+      titleId: crewmate.Crewmate.title,
+      src: crewmate.src,
+      isInCrew: crewmate.isInCrew,
+      crewInfo: crewmate.crewInfo,
+    };
+    
+    // Add image source if missing
+    if (!normalized.src) {
+      // Generate image URL based on class (using some example IDs)
+      const imageIds = {
+        1: 23342, // Pilot
+        2: 20709, // Engineer  
+        3: 28432, // Miner
+        4: 23857, // Merchant
+        5: 23365, // Scientist
+      };
+      const imageId = imageIds[normalized.classId] || 23342;
+      normalized.src = `https://images.influenceth.io/v1/crew/${imageId}/image.svg`;
+    }
+    
+    return normalized;
+  } else {
+    // Local format: { id, collection/collectionId, class/classId, traits/traitIds, ... }
+    return {
+      id: crewmate.id,
+      collectionId: crewmate.collectionId || crewmate.collection,
+      classId: crewmate.classId || crewmate.class,
+      traitIds: crewmate.traitIds || crewmate.traits || [],
+      departmentId: crewmate.departmentId,
+      titleId: crewmate.titleId,
+      src: crewmate.src,
+      isInCrew: crewmate.isInCrew,
+      crewInfo: crewmate.crewInfo,
+    };
+  }
+};
+
 export const getBonus = (crew) => {
+  // Normalize crew data format before passing to SDK
+  const normalizedCrew = crew.map(normalizeCrewmateFormat);
+  
   const bonusByAbility = Object.values(Crewmate.ABILITY_IDS).map((id) => {
-    return bonusByAbilityId(id, crew);
+    return bonusByAbilityId(id, normalizedCrew);
   });
 
   return bonusByAbility.sort((a, b) => {

@@ -11,7 +11,8 @@ export default function CrewmateGrid({ crewmates, onAddToSimulator, isDemo = fal
 
   // Get unique classes for filter
   const availableClasses = [...new Set(crewmates.map(cm => {
-    const crewmateClass = Crewmate.getClass(cm.class)
+    const classId = cm.Crewmate ? cm.Crewmate.class : cm.class
+    const crewmateClass = Crewmate.getClass(classId)
     return crewmateClass?.name || 'Unknown'
   }))].sort()
 
@@ -23,20 +24,23 @@ export default function CrewmateGrid({ crewmates, onAddToSimulator, isDemo = fal
 
     // Filter by class
     if (selectedClass !== 'all') {
-      const crewmateClass = Crewmate.getClass(crewmate.class)
+      const classId = crewmate.Crewmate ? crewmate.Crewmate.class : crewmate.class
+      const crewmateClass = Crewmate.getClass(classId)
       if (crewmateClass?.name !== selectedClass) return false
     }
 
     // Filter by search term
     if (searchTerm) {
-      const crewmateClass = Crewmate.getClass(crewmate.class)
+      const classId = crewmate.Crewmate ? crewmate.Crewmate.class : crewmate.class
+      const crewmateClass = Crewmate.getClass(classId)
       const className = crewmateClass?.name || ''
       const crewName = crewmate.crewInfo?.crewName || ''
       const searchLower = searchTerm.toLowerCase()
+      const crewmateId = crewmate.id || 'no-id'
       
       if (!className.toLowerCase().includes(searchLower) && 
           !crewName.toLowerCase().includes(searchLower) &&
-          !crewmate.id.toString().includes(searchLower)) {
+          !crewmateId.toString().includes(searchLower)) {
         return false
       }
     }
@@ -105,16 +109,21 @@ export default function CrewmateGrid({ crewmates, onAddToSimulator, isDemo = fal
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredCrewmates.map((crewmate, index) => {
-            const crewmateClass = Crewmate.getClass(crewmate.class)
-            const primaryTrait = crewmate.traits?.[0] ? Crewmate.getTrait(crewmate.traits[0]) : null
-            const title = crewmate.title ? Crewmate.getTitle(crewmate.title) : null
+            const classId = crewmate.Crewmate ? crewmate.Crewmate.class : crewmate.class
+            const collectionId = crewmate.Crewmate ? crewmate.Crewmate.collection : crewmate.collection
+            const traits = crewmate.Crewmate ? crewmate.Crewmate.traits : crewmate.traits
+            const titleId = crewmate.Crewmate ? crewmate.Crewmate.title : crewmate.title
+            
+            const crewmateClass = Crewmate.getClass(classId)
+            const primaryTrait = traits?.[0] ? Crewmate.getTrait(traits[0]) : null
+            const title = titleId ? Crewmate.getTitle(titleId) : null
             
             return (
               <div key={`${crewmate.id}-${index}`} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border">
                 {/* Collection Badge */}
                 <div className="p-4 border-b">
                   <div className="flex items-center justify-between mb-2">
-                    <CollectionBadge collectionId={crewmate.collection} size="sm" />
+                    <CollectionBadge collectionId={collectionId} size="sm" />
                     {title && (
                       <span className="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-1 rounded">
                         {title.name}
@@ -138,7 +147,7 @@ export default function CrewmateGrid({ crewmates, onAddToSimulator, isDemo = fal
                         {crewmateClass?.name || 'Unknown Class'}
                       </h5>
                       <p className="text-sm text-gray-500">
-                        ID: {crewmate.id}
+                        ID: {crewmate.id || 'N/A'}
                       </p>
                     </div>
                     
@@ -150,10 +159,10 @@ export default function CrewmateGrid({ crewmates, onAddToSimulator, isDemo = fal
                       </div>
                     )}
                     
-                    {crewmate.traits && crewmate.traits.length > 1 && (
+                    {traits && traits.length > 1 && (
                       <div>
                         <p className="text-xs text-gray-500">
-                          +{crewmate.traits.length - 1} more trait{crewmate.traits.length > 2 ? 's' : ''}
+                          +{traits.length - 1} more trait{traits.length > 2 ? 's' : ''}
                         </p>
                       </div>
                     )}
@@ -164,12 +173,12 @@ export default function CrewmateGrid({ crewmates, onAddToSimulator, isDemo = fal
                 <div className="p-4 border-t bg-gray-50">
                   <button
                     onClick={() => {
-                      console.log('Button clicked for crewmate:', crewmate.id, crewmate)
-                      console.log('onAddToSimulator function:', typeof onAddToSimulator)
+                      console.log('🔴 Button clicked for crewmate:', { id: crewmate.id, isDemo })
                       if (onAddToSimulator) {
+                        console.log('🟢 Calling onAddToSimulator function')
                         onAddToSimulator(crewmate)
                       } else {
-                        console.error('onAddToSimulator is not defined!')
+                        console.error('❌ onAddToSimulator function not provided!')
                       }
                     }}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-md transition-colors"
