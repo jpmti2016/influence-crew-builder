@@ -1,0 +1,120 @@
+name: Sync Kiro Specs with GitHub Issues
+
+on:
+  push:
+    paths:
+      - '.kiro/specs/**'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PROJECT_ID: PVT_kwHOAVFSGM4BY7DU
+      STATUS_FIELD_ID: PVTSSF_lAHOAVFSGM4BY7DUzhT9Y3I
+      IN_PROGRESS_OPTION_ID: 47fc9ee4
+      DONE_OPTION_ID: 98236657
+      REPO: jpmti2016/influence-crew-builder
+      PROJECT_OWNER: jpmti2016
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Process changed specs
+        run: |
+          CHANGED=$(git diff --name-only HEAD~1 HEAD | grep '^\.kiro/specs/' || true)
+
+          if [ -z "$CHANGED" ]; then
+            echo "No spec files changed."
+            exit 0
+          fi
+
+          # Collect unique spec folders
+          SPEC_FOLDERS=$(echo "$CHANGED" | awk -F'/' '{print $3}' | sort -u)
+
+          for FOLDER in $SPEC_FOLDERS; do
+            # Extract issue number from folder name (e.g. 42-feature-name → 42)
+            ISSUE_NUMBER=$(echo "$FOLDER" | grep -oE '^[0-9]+')
+
+            if [ -z "$ISSUE_NUMBER" ]; then
+              echo "Skipping $FOLDER — no issue number prefix."
+              continue
+            fi
+
+            TASKS_FILE=".kiro/specs/$FOLDER/tasks.md"
+
+            if [ ! -f "$TASKS_FILE" ]; then
+              echo "No tasks.md found for $FOLDER, skipping."
+              continue
+            fi
+
+            # Determine if tasks.md is new or modified
+            IS_NEW=$(git diff --name-only --diff-filter=A HEAD~1 HEAD | grep -c "$TASKS_FILE" || true)
+
+            # Count total and completed tasks
+            TOTAL=$(grep -cE '^\s*- \[(x| )\]' "$TASKS_FILE" || true)
+            COMPLETED=$(grep -cE '^\s*- \[x\]' "$TASKS_FILE" || true)
+
+            echo "Issue #$ISSUE_NUMBER — tasks: $COMPLETED/$TOTAL, new spec: $IS_NEW"
+
+            # Get the project item ID for this issue
+            ITEM_ID=$(gh api graphql -f query="
+              {
+                user(login: \"$PROJECT_OWNER\") {
+                  projectV2(number: 2) {
+                    items(first: 100) {
+                      nodes {
+                        id
+                        content {
+                          ... on Issue {
+                            number
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            " --jq ".data.user.projectV2.items.nodes[] | select(.content.number == $ISSUE_NUMBER) | .id")
+
+            if [ -z "$ITEM_ID" ]; then
+              echo "Issue #$ISSUE_NUMBER not found in project, skipping."
+              continue
+            fi
+
+            if [ "$TOTAL" -gt 0 ] && [ "$TOTAL" -eq "$COMPLETED" ]; then
+              # All tasks done → set status to Done and close issue
+              echo "All tasks complete — marking Done and closing issue #$ISSUE_NUMBER"
+              gh api graphql -f query="
+                mutation {
+                  updateProjectV2ItemFieldValue(input: {
+                    projectId: \"$PROJECT_ID\"
+                    itemId: \"$ITEM_ID\"
+                    fieldId: \"$STATUS_FIELD_ID\"
+                    value: { singleSelectOptionId: \"$DONE_OPTION_ID\" }
+                  }) { projectV2Item { id } }
+                }
+              "
+              gh issue close "$ISSUE_NUMBER" -R "$REPO"
+
+            elif [ "$IS_NEW" -gt 0 ]; then
+              # New spec created → set status to In Progress
+              echo "New spec — marking In Progress for issue #$ISSUE_NUMBER"
+              gh api graphql -f query="
+                mutation {
+                  updateProjectV2ItemFieldValue(input: {
+                    projectId: \"$PROJECT_ID\"
+                    itemId: \"$ITEM_ID\"
+                    fieldId: \"$STATUS_FIELD_ID\"
+                    value: { singleSelectOptionId: \"$IN_PROGRESS_OPTION_ID\" }
+                  }) { projectV2Item { id } }
+                }
+              "
+            fi
+          done
