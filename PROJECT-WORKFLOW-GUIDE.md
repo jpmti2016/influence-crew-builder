@@ -607,6 +607,44 @@ Most of this is now automated by the bootstrap script
 - **Spec folder must start with the issue number** (e.g. `42-feature-name`). If the folder name doesn't match the pattern, the automation skips it silently.
 - **The GitHub Project token scope** (`project`) is required for the gh CLI to query and update project fields. If you re-authenticate gh, run `gh auth refresh -s project` again.
 
+### Git branching convention: spec planning vs implementation
+
+All projects use a two-phase git workflow that keeps the Project board in sync
+while still protecting `main` from unreviewed code:
+
+1. **Spec planning happens on `main`** — commit and push `.kiro/specs/` changes
+   directly to `main`. This triggers `sync-kiro-specs.yml` which updates issue
+   status (Todo → In Progress when a new spec is created, In Progress → Done
+   when all tasks are checked).
+
+2. **Implementation happens on a feature branch** — after the spec is committed
+   to `main`, create a feature branch for the code implementation. Push code to
+   the feature branch and merge to `main` via PR when complete. When the merged
+   `tasks.md` shows all tasks `[x]`, the workflow sets the issue to Done and
+   closes it.
+
+**Why this split?** The `sync-kiro-specs.yml` workflow only triggers on pushes
+to `main`. If specs were pushed to a feature branch, the Project board would
+never update until the branch merged — meaning "In Progress" status would be
+delayed until the feature is already done. Spec documents are planning
+artifacts (not executable code), so pushing them directly to `main` is safe and
+keeps the Gantt current in real time.
+
+**Rules for AI agents (Kiro / Claude Code):**
+
+- When the user says "commit and push" and the changes are **spec-only** (files
+  under `.kiro/specs/`), push directly to `main`. Do not create a feature branch
+  for spec docs.
+- When the user says "commit and push" and the changes include
+  **implementation code** (anything outside `.kiro/specs/`), push to a feature
+  branch named after the spec (e.g. `5-feat-display-product-card`).
+- When starting implementation of a spec's tasks, create a feature branch from
+  `main` first.
+
+This convention is also stored globally in `~/.kiro/steering/git-workflow.md`
+so that Kiro follows it across all projects without needing per-session
+reminders.
+
 ---
 
 ## 9. Spec Generation from Issues
