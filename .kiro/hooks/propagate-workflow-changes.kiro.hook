@@ -1,0 +1,24 @@
+{
+  "enabled": true,
+  "name": "Propagate Project Workflow Changes",
+  "description": "When any project-workflow artifact (the sync/add-issue workflows, the .kiro scripts or hooks, or the workflow guide) is edited, propagate the change to the source of truth (/home/code/Documents/DevCourses/projects-workflow-ai) and to all consuming projects under /home/code/Documents/DevCourses/, locally and on GitHub, and update PROJECT-WORKFLOW-GUIDE.md.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      ".github/workflows/sync-kiro-specs.yml",
+      ".github/workflows/add-issue-to-project.yml",
+      ".kiro/scripts/generate-spec-from-issues.sh",
+      ".kiro/scripts/setup-new-project.sh",
+      ".kiro/scripts/setup-project-token.sh",
+      ".kiro/hooks/spec-from-issue.kiro.hook",
+      ".kiro/hooks/setup-new-project.kiro.hook",
+      ".kiro/hooks/setup-project-token.kiro.hook",
+      "PROJECT-WORKFLOW-GUIDE.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A project-workflow artifact was just edited. Propagate this change across the workflow system, treating /home/code/Documents/DevCourses/projects-workflow-ai as the source of truth:\n\n1. Update the canonical copy in /home/code/Documents/DevCourses/projects-workflow-ai with the same change (reconciling, not blindly overwriting — preserve any improvements the canonical already has).\n2. Update PROJECT-WORKFLOW-GUIDE.md (in the canonical repo and this repo) to document the change.\n3. Identify all consuming projects under /home/code/Documents/DevCourses/ (those containing .github/workflows/sync-kiro-specs.yml — currently ~17 repos) and apply the same reconciled change to each, locally.\n4. For each updated repo, commit with a clear message and push to its GitHub remote.\n\nIMPORTANT: the sync workflow is shared and all repos target the same user-level Project #2, so the workflow body is uniform — but always reconcile improvements from both sides rather than overwrite. Before pushing to multiple GitHub remotes (high blast radius), summarize exactly which repos will change and confirm with the user. Never force-push."
+  }
+}

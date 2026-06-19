@@ -1,0 +1,49 @@
+name: Add New Issues to Project
+
+# Auto-adds every newly created issue in this repo to GitHub Project #2, so the
+# spec-sync automation always has a project item to update (Todo → In Progress
+# → Done). Runs server-side, so it covers issues created any way: the
+# /problem-to-issues skill, gh CLI, or the GitHub UI.
+#
+# Adding an issue that is already in the project is a no-op (the mutation
+# returns the existing item), so reopened/transferred issues are safe.
+
+on:
+  issues:
+    types: [opened, reopened, transferred]
+
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+
+    env:
+      # Adding an item to a user-owned ProjectV2 needs account-level Projects
+      # access — the built-in GITHUB_TOKEN cannot do it. Reuses the same
+      # PROJECT_TOKEN as sync-kiro-specs.yml. See PROJECT-WORKFLOW-GUIDE.md §6.
+      PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+      PROJECT_ID: PVT_kwHOAVFSGM4BY7DU
+      ISSUE_NODE_ID: ${{ github.event.issue.node_id }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+
+    steps:
+      - name: Require PROJECT_TOKEN
+        run: |
+          if [ -z "$PROJECT_TOKEN" ]; then
+            echo "::error::PROJECT_TOKEN secret is not set. Issues cannot be" \
+              "auto-added to Project #2 without account-level Projects access."
+            echo "::error::Fix: run .kiro/scripts/setup-project-token.sh locally," \
+              "or see PROJECT-WORKFLOW-GUIDE.md §6."
+            exit 1
+          fi
+
+      - name: Add issue to Project #2
+        env:
+          GH_TOKEN: ${{ env.PROJECT_TOKEN }}
+        run: |
+          echo "Adding issue #${ISSUE_NUMBER} to project ${PROJECT_ID}..."
+          ITEM_ID=$(gh api graphql \
+            -f query='mutation($pid:ID!,$cid:ID!){ addProjectV2ItemById(input:{projectId:$pid contentId:$cid}){ item { id } } }' \
+            -f pid="$PROJECT_ID" \
+            -f cid="$ISSUE_NODE_ID" \
+            --jq '.data.addProjectV2ItemById.item.id')
+          echo "✓ Issue #${ISSUE_NUMBER} is in the project (item: ${ITEM_ID})."
