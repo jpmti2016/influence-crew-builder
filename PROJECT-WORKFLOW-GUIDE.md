@@ -18,6 +18,7 @@ A unified system for planning, tracking, and automating progress across all side
 10. [AI-Assisted Issue Generation from Problem Statements](#10-ai-assisted-issue-generation-from-problem-statements)
 11. [New Project Bootstrap](#11-new-project-bootstrap)
 12. [Tech Stack Installation](#12-tech-stack-installation)
+13. [Global Auto-Approve Steering](#13-global-auto-approve-steering)
 
 ---
 
@@ -1207,3 +1208,67 @@ npm install @aws-amplify/ui-react aws-amplify
 > Treat the commands above as a starting point. Always verify versions/flags
 > against the `aws-amplify` power and current docs before running, and prefer
 > the power's guided workflow for the Amplify portion.
+
+---
+
+## 13. Global Auto-Approve Steering
+
+A global steering file eliminates repeated approval prompts for routine
+development operations across all workspaces. It lives at the user level so
+every project inherits it automatically.
+
+### File location
+
+```
+~/.kiro/steering/auto-approve-rules.md
+```
+
+Because it's under `~/.kiro/steering/` (not a workspace `.kiro/steering/`), it
+applies to **every project** Kiro opens — no per-repo copy needed.
+
+### What it controls
+
+**Auto-approved (no confirmation needed):**
+
+- Running linters (`npm run lint`, `eslint`, etc.)
+- Running builds (`npm run build`, `next build`, `tsc --noEmit`, etc.)
+- Running tests (`npm test`, `vitest`, `jest`, etc.)
+- Installing dev dependencies (`npm install`, `npm ci`)
+- Running formatters (`prettier`, etc.)
+- Git operations for staging, committing, and pushing (when the user has
+  requested it)
+- Reading any file in the repository
+- Creating or editing source files, test files, and config files
+
+**Always requires explicit confirmation:**
+
+- Any changes to **authentication** or **authorization** logic (Cognito, IAM,
+  auth rules, login flows)
+- Any changes to **payment** processing (Stripe, billing, invoicing,
+  subscriptions)
+- Any **hard delete** operations (dropping tables, deleting database records,
+  `rm -rf`, destructive migrations)
+- Any changes to **production** environment configurations or deployments
+- Any operations that modify **secrets** or **credentials**
+
+### Why this exists
+
+Without the steering file, Kiro's Supervised mode prompts for approval on every
+shell command and file write — including routine lint/build/test runs. This
+creates friction during task execution (especially "Run All Tasks" on a spec)
+without adding safety for low-risk operations. The steering file tells the agent
+to proceed autonomously for safe, reversible operations while still gating
+anything destructive or security-sensitive.
+
+### Relationship to Autopilot mode
+
+This steering file complements — but does not replace — Kiro's autonomy modes:
+
+- **Autopilot mode** lets the agent work without yielding for approval on file
+  edits. The steering file adds the _semantic_ distinction (safe ops vs.
+  dangerous ops) that Autopilot alone doesn't provide.
+- **Supervised mode** still yields on file edits for review, but the steering
+  file prevents unnecessary prompts for shell commands like `npm test`.
+
+The recommended setup is **Autopilot + this steering file** for maximum flow
+with safety on the operations that matter.
