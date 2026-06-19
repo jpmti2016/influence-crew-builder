@@ -2,8 +2,12 @@ name: Sync Kiro Specs with GitHub Issues
 
 on:
   push:
+    # main only: issue/Project status is canonical and driven by the default
+    # branch. Feature-branch spec pushes must not flip Project status.
+    branches:
+      - main
     paths:
-      - '.kiro/specs/**'
+      - ".kiro/specs/**"
 
 jobs:
   sync:
@@ -13,23 +17,84 @@ jobs:
       contents: read
 
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Token split (least privilege):
+      #   REPO_TOKEN    — the ephemeral, repo-scoped token GitHub injects into
+      #                   every run. Used ONLY for the git clone and for closing
+      #                   issues (issues: write on this repo). No setup needed.
+      #   PROJECT_TOKEN — a long-lived credential with account-level Projects
+      #                   access. Used ONLY for the ProjectV2 GraphQL read +
+      #                   status mutations, which REPO_TOKEN cannot perform
+      #                   because the project lives outside the repo boundary.
+      #
+      # PROJECT_TOKEN is REQUIRED. This workflow runs in "full status" mode:
+      # it drives Todo → In Progress → Done on the Gantt. The In Progress
+      # transition has no issue-level equivalent, so without PROJECT_TOKEN the
+      # workflow cannot do its job and will FAIL with setup instructions rather
+      # than silently degrade. Set it up with:
+      #   .kiro/scripts/setup-project-token.sh
+      # (see PROJECT-WORKFLOW-GUIDE.md §6 for token creation + hardening).
+      #
+      # Required PROJECT_TOKEN: a CLASSIC PAT owned by jpmti2016 with the
+      # "project" scope (Full control of projects) and a short expiry (e.g. 90
+      # days). Project #2 is USER-owned, and fine-grained PATs do not expose a
+      # "Projects" permission for user-owned ProjectsV2 — so a classic token is
+      # required here.
+      REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
       PROJECT_ID: PVT_kwHOAVFSGM4BY7DU
       STATUS_FIELD_ID: PVTSSF_lAHOAVFSGM4BY7DUzhT9Y3I
       IN_PROGRESS_OPTION_ID: 47fc9ee4
       DONE_OPTION_ID: 98236657
-      REPO: jpmti2016/influence-crew-builder
+      REPO: ${{ github.repository }}
       PROJECT_OWNER: jpmti2016
+      # The commit the branch pointed at before this push (all-zeros for a new
+      # branch). Used as the base of the full push-range diff below.
+      EVENT_BEFORE: ${{ github.event.before }}
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
+      - name: Require PROJECT_TOKEN
+        run: |
+          if [ -z "$PROJECT_TOKEN" ]; then
+            echo "::error::PROJECT_TOKEN secret is not set. This workflow runs in" \
+              "full status mode (Todo → In Progress → Done) and needs a token with" \
+              "account-level Projects access."
+            echo "::error::Fix: create a CLASSIC PAT with the \"project\" scope" \
+              "(Full control of projects), then store it as a repo secret named" \
+              "PROJECT_TOKEN. Run .kiro/scripts/setup-project-token.sh locally," \
+              "or see PROJECT-WORKFLOW-GUIDE.md §6."
+            exit 1
+          fi
+          echo "PROJECT_TOKEN is present — full status automation enabled."
+
+      - name: Checkout (manual — no external action required)
+        env:
+          GH_TOKEN: ${{ env.REPO_TOKEN }}
+        run: |
+          # A plain clone avoids actions/checkout, which the account/org Actions
+          # policy blocks when set to "Allow <owner> actions and reusable
+          # workflows" ("all actions must be from a repository owned by
+          # jpmti2016"). Full history (no --depth) so the whole push range
+          # github.event.before..GITHUB_SHA can be diffed, even when a push
+          # contains more than one commit.
+          git clone --branch "${GITHUB_REF_NAME}" \
+            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
 
       - name: Process changed specs
         run: |
-          CHANGED=$(git diff --name-only HEAD~1 HEAD | grep '^\.kiro/specs/' || true)
+          # Diff the WHOLE push range (before..after), not just the last commit,
+          # so a spec is detected even when it is not the final commit of a push.
+          AFTER="$GITHUB_SHA"
+          ZERO="0000000000000000000000000000000000000000"
+          # Fall back to the empty tree when the before-commit is absent (new
+          # branch, or first-ever push) so the diff still lists files.
+          if [ -z "$EVENT_BEFORE" ] || [ "$EVENT_BEFORE" = "$ZERO" ] \
+             || ! git rev-parse --verify --quiet "${EVENT_BEFORE}^{commit}" >/dev/null; then
+            BASE=$(git hash-object -t tree /dev/null)
+          else
+            BASE="$EVENT_BEFORE"
+          fi
 
+          CHANGED=$(git diff --name-only "$BASE" "$AFTER" | grep '^\.kiro/specs/' || true)
           if [ -z "$CHANGED" ]; then
             echo "No spec files changed."
             exit 0
@@ -54,8 +119,8 @@ jobs:
               continue
             fi
 
-            # Determine if tasks.md is new or modified
-            IS_NEW=$(git diff --name-only --diff-filter=A HEAD~1 HEAD | grep -c "$TASKS_FILE" || true)
+            # New spec when tasks.md was Added anywhere in the push range.
+            IS_NEW=$(git diff --name-only --diff-filter=A "$BASE" "$AFTER" | grep -c "^$TASKS_FILE$" || true)
 
             # Count total and completed tasks
             TOTAL=$(grep -cE '^\s*- \[(x| )\]' "$TASKS_FILE" || true)
@@ -63,8 +128,15 @@ jobs:
 
             echo "Issue #$ISSUE_NUMBER — tasks: $COMPLETED/$TOTAL, new spec: $IS_NEW"
 
-            # Get the project item ID for this issue
-            ITEM_ID=$(gh api graphql -f query="
+            # Look up the project item ID for this issue. Reading a user-owned
+            # ProjectV2 also requires project access, so this uses PROJECT_TOKEN.
+            # Project #2 aggregates issues from ALL repos, and issue NUMBERS are
+            # only unique per-repo — many repos share an issue #1. So we must
+            # filter by BOTH the issue number AND this repo's nameWithOwner,
+            # otherwise the jq returns several item IDs (one per repo) joined by
+            # newlines and the mutation below fails with a malformed-string
+            # GraphQL error.
+            ITEM_ID=$(GH_TOKEN="$PROJECT_TOKEN" gh api graphql -f query="
               {
                 user(login: \"$PROJECT_OWNER\") {
                   projectV2(number: 2) {
@@ -74,6 +146,7 @@ jobs:
                         content {
                           ... on Issue {
                             number
+                            repository { nameWithOwner }
                           }
                         }
                       }
@@ -81,17 +154,22 @@ jobs:
                   }
                 }
               }
-            " --jq ".data.user.projectV2.items.nodes[] | select(.content.number == $ISSUE_NUMBER) | .id")
+            " --jq ".data.user.projectV2.items.nodes[] | select(.content.number == $ISSUE_NUMBER and .content.repository.nameWithOwner == \"$REPO\") | .id")
 
             if [ -z "$ITEM_ID" ]; then
-              echo "Issue #$ISSUE_NUMBER not found in project, skipping."
+              echo "::warning::Issue #$ISSUE_NUMBER not found in project — add it to" \
+                "Project #2 so its status can be tracked. Skipping status update."
+              # Still close the issue if all tasks are done.
+              if [ "$TOTAL" -gt 0 ] && [ "$TOTAL" -eq "$COMPLETED" ]; then
+                GH_TOKEN="$REPO_TOKEN" gh issue close "$ISSUE_NUMBER" -R "$REPO"
+              fi
               continue
             fi
 
             if [ "$TOTAL" -gt 0 ] && [ "$TOTAL" -eq "$COMPLETED" ]; then
-              # All tasks done → set status to Done and close issue
+              # All tasks done → set status to Done and close issue.
               echo "All tasks complete — marking Done and closing issue #$ISSUE_NUMBER"
-              gh api graphql -f query="
+              GH_TOKEN="$PROJECT_TOKEN" gh api graphql -f query="
                 mutation {
                   updateProjectV2ItemFieldValue(input: {
                     projectId: \"$PROJECT_ID\"
@@ -101,12 +179,13 @@ jobs:
                   }) { projectV2Item { id } }
                 }
               "
-              gh issue close "$ISSUE_NUMBER" -R "$REPO"
+              GH_TOKEN="$REPO_TOKEN" gh issue close "$ISSUE_NUMBER" -R "$REPO"
 
             elif [ "$IS_NEW" -gt 0 ]; then
-              # New spec created → set status to In Progress
+              # New spec created → set status to In Progress. This transition has
+              # no issue-level equivalent, which is why PROJECT_TOKEN is required.
               echo "New spec — marking In Progress for issue #$ISSUE_NUMBER"
-              gh api graphql -f query="
+              GH_TOKEN="$PROJECT_TOKEN" gh api graphql -f query="
                 mutation {
                   updateProjectV2ItemFieldValue(input: {
                     projectId: \"$PROJECT_ID\"
